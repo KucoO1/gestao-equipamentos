@@ -1,0 +1,52 @@
+# Project: Gestao de equipamentos
+# Makefile created by Embarcadero Dev-C++ 6.3
+
+CPP      = g++.exe
+CC       = gcc.exe
+WINDRES  = windres.exe
+OBJ      = main.o data.o componentes.o empresas.o interface.o operacoes.o postos.o funcionarios.o util.o
+LINKOBJ  = main.o data.o componentes.o empresas.o interface.o operacoes.o postos.o funcionarios.o util.o
+LIBS     = -L"C:/Program Files (x86)/Embarcadero/Dev-Cpp/TDM-GCC-64/lib" -L"C:/Program Files (x86)/Embarcadero/Dev-Cpp/TDM-GCC-64/x86_64-w64-mingw32/lib" -static-libgcc
+INCS     = -I"C:/Program Files (x86)/Embarcadero/Dev-Cpp/TDM-GCC-64/include" -I"C:/Program Files (x86)/Embarcadero/Dev-Cpp/TDM-GCC-64/x86_64-w64-mingw32/include" -I"C:/Program Files (x86)/Embarcadero/Dev-Cpp/TDM-GCC-64/lib/gcc/x86_64-w64-mingw32/9.2.0/include"
+CXXINCS  = -I"C:/Program Files (x86)/Embarcadero/Dev-Cpp/TDM-GCC-64/include" -I"C:/Program Files (x86)/Embarcadero/Dev-Cpp/TDM-GCC-64/x86_64-w64-mingw32/include" -I"C:/Program Files (x86)/Embarcadero/Dev-Cpp/TDM-GCC-64/lib/gcc/x86_64-w64-mingw32/9.2.0/include" -I"C:/Program Files (x86)/Embarcadero/Dev-Cpp/TDM-GCC-64/lib/gcc/x86_64-w64-mingw32/9.2.0/include/c++"
+BIN      = "Gestao de equipamentos.exe"
+CXXFLAGS = $(CXXINCS) 
+CFLAGS   = $(INCS) 
+DEL      = C:\Program Files (x86)\Embarcadero\Dev-Cpp\devcpp.exe INTERNAL_DEL
+
+.PHONY: all all-before all-after clean clean-custom
+
+all: all-before $(BIN) all-after
+
+clean: clean-custom
+	${DEL} $(OBJ) $(BIN)
+
+$(BIN): $(OBJ)
+	$(CC) $(LINKOBJ) -o $(BIN) $(LIBS)
+
+main.o: main.c
+	$(CC) -c main.c -o main.o $(CFLAGS)
+
+data.o: data.c
+	$(CC) -c data.c -o data.o $(CFLAGS)
+
+componentes.o: componentes.c
+	$(CC) -c componentes.c -o componentes.o $(CFLAGS)
+
+empresas.o: empresas.c
+	$(CC) -c empresas.c -o empresas.o $(CFLAGS)
+
+interface.o: interface.c
+	$(CC) -c interface.c -o interface.o $(CFLAGS)
+
+operacoes.o: operacoes.c
+	$(CC) -c operacoes.c -o operacoes.o $(CFLAGS)
+
+postos.o: postos.c
+	$(CC) -c postos.c -o postos.o $(CFLAGS)
+
+funcionarios.o: funcionarios.c
+	$(CC) -c funcionarios.c -o funcionarios.o $(CFLAGS)
+
+util.o: util.c
+	$(CC) -c util.c -o util.o $(CFLAGS)
