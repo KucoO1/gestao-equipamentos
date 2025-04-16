@@ -39,14 +39,19 @@ int main() {
              			system("cls");
              			removerFuncionario();
              			break;
+             		case 6:
+             			system("cls");
+             			alterarLimiteFuncionarios();
+             			break;
              		case 0:
              			printf("Saindo do menu de funcionarios");
              			break;
              		default:
              			printf("Opcao Invalida");
 				 }
+				 
 				 }while(opc1!=0);
-             	
+             	finalizar();
                 break;
             case 3:
                 menuEmpresas();

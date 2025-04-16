@@ -8,10 +8,82 @@ int totalFuncionarios=0;
 
 Funcionario* funcionarios;
 
+//-------------------------------------- Base de dados (arquivos em txt) ----------------------------------------
+void salvarConfiguracao() {
+    FILE *arquivo = fopen("config.txt", "w");
+    if (arquivo == NULL) {
+        printf("Erro ao salvar a configuracao.\n");
+        return;
+    }
+    fprintf(arquivo, "%d\n", numeroDeFuncionarios);
+    fclose(arquivo);
+}
+
+void carregarConfiguracao() {
+    FILE *arquivo = fopen("config.txt", "r");
+    if (arquivo == NULL) {
+        printf("Digite o numero maximo de funcionarios: ");
+        scanf("%d", &numeroDeFuncionarios);
+        salvarConfiguracao(); 
+    } else {
+        fscanf(arquivo, "%d", &numeroDeFuncionarios);
+        fclose(arquivo);
+    }
+}
+
+void salvarFuncionariosEmArquivo() {
+    FILE *arquivo = fopen("funcionarios.txt", "w");
+    if (arquivo == NULL) {
+        printf("Erro ao abrir o arquivo para escrita.\n");
+        return;
+    }
+
+    for (int i = 0; i < totalFuncionarios; i++) {
+        fprintf(arquivo, "%d;%s;%s;%s\n",
+                funcionarios[i].id,
+                funcionarios[i].nome,
+                funcionarios[i].funcao,
+                funcionarios[i].descricao);
+    }
+
+    fclose(arquivo);
+}
+
+void carregarFuncionariosDoArquivo() {
+    FILE *arquivo = fopen("funcionarios.txt", "r");
+    if (arquivo == NULL) {
+        return; 
+    }
+	totalFuncionarios = 0;
+    while (fscanf(arquivo, "%d;%[^;];%[^;];%[^\n]\n",
+                  &funcionarios[totalFuncionarios].id,
+                  funcionarios[totalFuncionarios].nome,
+                  funcionarios[totalFuncionarios].funcao,
+                  funcionarios[totalFuncionarios].descricao) == 4) {
+        totalFuncionarios++;
+    }
+
+    fclose(arquivo);
+}
+
+void finalizar() {
+    salvarFuncionariosEmArquivo();
+    free(funcionarios);
+}
+
+//--------------------------------------------------------------------------------------------------------------
+
 void inicializarFuncionarios(){
-	printf("Quantos funcionarios tem a sua empresa?: ");
-	scanf("%d",&numeroDeFuncionarios);
+	carregarConfiguracao();
 	funcionarios = (Funcionario*)malloc(numeroDeFuncionarios * sizeof(Funcionario));
+	carregarFuncionariosDoArquivo();
+}
+void alterarLimiteFuncionarios() {
+    printf("Digite o novo limite de funcionarios: ");
+    scanf("%d", &numeroDeFuncionarios);
+    funcionarios = (Funcionario*)realloc(funcionarios, numeroDeFuncionarios * sizeof(Funcionario));
+    salvarConfiguracao();
+    printf("Limite alterado com sucesso!\n");
 }
 
 void adicionarFuncionario(){
@@ -20,22 +92,23 @@ void adicionarFuncionario(){
         return;
     }
 	Funcionario f;
-	f.id = totalFuncionarios++;
-	
+	f.id = totalFuncionarios;
+
 	fflush(stdin);
 	printf("Nome: ");
 	gets(f.nome);
 
 	printf("Funcao: ");
 	gets(f.funcao);
-	
 
 	printf("Descricao: ");
 	gets(f.descricao);
-	
+
 	funcionarios[totalFuncionarios] = f;
+	totalFuncionarios++;
+	salvarFuncionariosEmArquivo();
 	printf("Funcionario adicionado com sucesso!\n");
-	
+
 }
 
 void listarFuncionarios(){
@@ -46,13 +119,14 @@ void listarFuncionarios(){
 		printf("Nenhum funcionario cadastrado.");
 		return;
 	}
-	for(int i=1;i<=totalFuncionarios;i++){
-		 printf("ID: %d\nNome: %s\nFuncao: %s\nDescricao: %s\n\n", 
-            funcionarios[i].id,
-            funcionarios[i].nome,
-            funcionarios[i].funcao,
-            funcionarios[i].descricao);
-	}
+	for (int i = 0; i < totalFuncionarios; i++) {
+    printf("ID: %d\nNome: %s\nFuncao: %s\nDescricao: %s\n\n", 
+           funcionarios[i].id,
+           funcionarios[i].nome,
+           funcionarios[i].funcao,
+           funcionarios[i].descricao);
+}
+
 }
 void pesquisarFuncionario() {
 	char nome[50];
@@ -60,9 +134,8 @@ void pesquisarFuncionario() {
 	fflush(stdin);
 	printf("Digite o nome do funcionario: ");
 	gets(nome);
-   
     
-    for(int i=1;i<=totalFuncionarios;i++){
+    for(int i=0;i<totalFuncionarios;i++){
         if(strcmp(funcionarios[i].nome, nome) == 0){
     		printf("Encontrado:\nID: %d\nNome: %s\nFuncao: %s\nDescricao: %s\n", 
             funcionarios[i].id, 
@@ -96,7 +169,6 @@ void alterarFuncionario(){
             return;
 		}
 	}
-	
 }
 void removerFuncionario(){
 	int id;
@@ -115,5 +187,4 @@ void removerFuncionario(){
   	}
 	 printf("Funcionario nao encontrado.\n"); 
 }
-
 

@@ -31,6 +31,7 @@ int menuFuncionarios() {
     printf("3. Pesquisar Funcionario\n");
     printf("4. Alterar Funcionario\n");
     printf("5. Remover Funcionario\n");
+    printf("6. Alterar limite de funcionarios\n");
     printf("0. Sair\n");
     printf("\n================================\n");
   	scanf("%d",&opc1);
