@@ -56,6 +56,18 @@ int menuPostos() {
   	return opc2;
 }
 
-void menuOperacoes() {
-    printf("Menu de Operacoes (em construcao)\n");
+int menuOperacoes() {
+    int opc3;
+
+    printf("\n=== MENU OPERACOES ===\n");
+    printf("1. Inserir Operacao\n");
+    printf("2. Listar Operacoes\n");
+    printf("3. Pesquisar Operacoes\n");
+    printf("4. Alterar Operacao\n");
+    printf("5. Remover Operacao\n");
+    printf("0. Sair\n");
+    printf("Opcao: ");
+    scanf("%d", &opc3);
+
+    return opc3;
 }

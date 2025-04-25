@@ -5,9 +5,7 @@
 #include <stdlib.h>
 
 int main() {
-    int opcao;
-    int opc1;
-    int opc2;
+    int opcao, opc1, opc2;
     do {
         opcao = menuPrincipal();
         switch (opcao) {
@@ -49,7 +47,7 @@ int main() {
              		default:
              			printf("Opcao Invalida");
 				 }
-				 
+
 				 }while(opc1!=0);
              	finalizar();
                 break;
@@ -90,7 +88,39 @@ int main() {
 				 }while(opc2!=0);
                 break;
             case 5:
-                menuOperacoes();
+            	system("cls");
+            	carregarOperacoesDoArquivo();
+                do{
+             		opc2 = menuOperacoes();
+             		switch(opc2){
+             		case 1:
+             			system("cls");
+             			inserirOperacao();
+             			break;
+             		case 2:
+             			system("cls");
+             			listarOperacoes();
+             			break;
+             		case 3:
+             			system("cls");
+             			pesquisarOperacao();
+             			break;
+             		case 4:
+             			system("cls");
+             			alterarOperacao();
+             			break;
+             		case 5:
+             			system("cls");
+             			apagarOperacao();
+             			break;
+             		case 0:
+             			printf("Saindo do menu de operacoes");
+             			break;
+             		default:
+             			printf("Opcao invalida");
+				 }
+				 }while(opc2!=0);
+
                 break;
             case 0:
                 printf("Saindo...\n");
@@ -99,5 +129,7 @@ int main() {
                 printf("Opcao invalida.\n");
         }
     } while (opcao != 0);
+    
+    
     return 0;
 }

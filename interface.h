@@ -8,5 +8,5 @@ void menuComponentes();
 int menuFuncionarios();
 void menuEmpresas();
 int menuPostos();
-void menuOperacoes();
+int menuOperacoes();
 #endif

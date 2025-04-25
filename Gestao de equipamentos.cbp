@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6" />
+	<Project>
+		<Option title="Gestao de equipamentos" />
+		<Option pch_mode="2" />
+		<Option compiler="gcc" />
+		<Build>
+			<Target title="default">
+				<Option output="Gestao de equipamentos" prefix_auto="1" extension_auto="1" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+			</Target>
+		</Build>
+		<Unit filename="componentes.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="componentes.h">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="data.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="data.h">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="empresas.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="empresas.h">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="funcionarios.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="funcionarios.h">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="interface.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="interface.h">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="main.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="operacoes.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="operacoes.h">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="postos.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="postos.h">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="util.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="util.h">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Extensions>
+			<lib_finder disable_auto="1" />
+		</Extensions>
+	</Project>
+</CodeBlocks_project_file>
