@@ -1,125 +1,217 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h> 
+#include <string.h>
 #include "data.h"
 
 int numeroDePostos;
-int totalPostos=0;
+int totalPostos = 0;
 
- PostoTrabalho* postos;
+PostoTrabalho* postos;
 
-void inicializarPostos(){
-	printf("Quantos postos de trabalho tem a sua empresa?: ");
-	scanf("%d",&numeroDePostos);
-	postos = (PostoTrabalho*)malloc(numeroDePostos * sizeof(PostoTrabalho));
-}
+//----------------------------- Base de dados (arquivos em txt) para Postos ------------------------------
 
-void adicionarPosto(){
-	if (totalPostos >= numeroDePostos) {
-        printf("Limite de postos de trabalho atingidos.\n");
+void salvarConfiguracaoPostos() {
+    FILE *arquivo = fopen("config_postos.txt", "w");
+    if (arquivo == NULL) {
+        printf("Erro ao salvar a configuracao dos postos.\n");
         return;
     }
-	PostoTrabalho p;
-	p.id = totalPostos++;
-	p.idFuncionario = totalPostos;
-	
-	fflush(stdin);
-	printf("Nome: ");
-	gets(p.nome);
-
-	printf("Local: ");
-	gets(p.local);
-
-	printf("Secao: ");
-	gets(p.secao);
-	
-	printf("Descricao: ");
-	gets(p.descricao);
-	
-	postos[totalPostos] = p;
-	printf("Posto de trabalho adicionado com sucesso!\n");
+    fprintf(arquivo, "%d\n", numeroDePostos);
+    fclose(arquivo);
 }
-void listarPostos(){
-	system("cls");
-	printf("\n======= Postos de Trabalho ==========\n");
-	int i;
-	if (totalPostos==0){
-		printf("Nenhum posto de trabalho cadastrado.");
-		return;
-	}
-	for(int i=1;i<=totalPostos;i++){
-		 printf("ID: %d\nID Funcionario: %d\nNome: %s\nLocal: %s\nSecao: %s\nDescricao: %s\n", 
-            postos[i].id,
-            postos[i].idFuncionario,
-            postos[i].nome,
-            postos[i].local,
-            postos[i].secao,
-			postos[i].descricao);
-	}
+
+void carregarConfiguracaoPostos() {
+    FILE *arquivo = fopen("config_postos.txt", "r");
+    if (arquivo == NULL) {
+        printf("Digite o numero maximo de postos de trabalho: ");
+        scanf("%d", &numeroDePostos);
+        salvarConfiguracaoPostos();
+    } else {
+        fscanf(arquivo, "%d", &numeroDePostos);
+        fclose(arquivo);
+    }
 }
-void pesquisarPosto() {
-	char nome[50];
-	
-	fflush(stdin);
-	printf("Digite o nome do posto: ");
-	gets(nome);
-   
-    
-    for(int i=1;i<=totalPostos;i++){
-        if(strcmp(postos[i].nome, nome) == 0){
-    		printf("Encontrado:\nID: %d\nID Funcionario: %d\nNome: %s\nLocal: %s\nSecao: %s\nDescricao: %s\n", 
-            postos[i].id,
-            postos[i].idFuncionario,
-            postos[i].nome, 
-            postos[i].local,
-             postos[i].secao,
-            postos[i].descricao);
+
+void salvarPostosEmArquivo() {
+    FILE *arquivo = fopen("postos.txt", "w");
+    if (arquivo == NULL) {
+        printf("Erro ao abrir o arquivo de postos para escrita.\n");
         return;
-        printf("Posto de trabalho nao encontrado.\n");
-		}
-	}
+    }
+
+    for (int i = 0; i < totalPostos; i++) {
+        fprintf(arquivo, "%d;%d;%s;%s;%s;%s\n",
+                postos[i].id,
+                postos[i].idFuncionario,
+                postos[i].nome,
+                postos[i].local,
+                postos[i].secao,
+                postos[i].descricao);
+    }
+
+    fclose(arquivo);
 }
-void alterarPosto(){
-	int id;
-	printf("ID do posto a alterar: ");
-	scanf("%d",&id);
-	int i;
-	for(i=1;i<=totalPostos;i++){
-		if(postos[i].id == id){
-			
-			fflush(stdin);
-			printf("Novo nome: ");
-			gets(postos[i].nome);
-           
+
+void carregarPostosDoArquivo() {
+    FILE *arquivo = fopen("postos.txt", "r");
+    if (arquivo == NULL) {
+        return;
+    }
+
+    totalPostos = 0;
+    while (fscanf(arquivo, "%d;%d;%[^;];%[^;];%[^;];%[^\n]\n",
+                  &postos[totalPostos].id,
+                  &postos[totalPostos].idFuncionario,
+                  postos[totalPostos].nome,
+                  postos[totalPostos].local,
+                  postos[totalPostos].secao,
+                  postos[totalPostos].descricao) == 6) {
+        totalPostos++;
+    }
+
+    fclose(arquivo);
+}
+
+void finalizarPostos() {
+    salvarPostosEmArquivo();
+    free(postos);
+}
+
+//---------------------------------------------------------------------------------------------------------
+
+void inicializarPostos() {
+    carregarConfiguracaoPostos();
+    postos = (PostoTrabalho*)malloc(numeroDePostos * sizeof(PostoTrabalho));
+    carregarPostosDoArquivo();
+}
+
+void alterarLimitePostos() {
+    printf("Digite o novo limite de postos de trabalho: ");
+    scanf("%d", &numeroDePostos);
+    postos = (PostoTrabalho*)realloc(postos, numeroDePostos * sizeof(PostoTrabalho));
+    salvarConfiguracaoPostos();
+    printf("Limite de postos alterado com sucesso!\n");
+}
+
+void adicionarPosto() {
+    if (totalPostos >= numeroDePostos) {
+        printf("Limite de postos de trabalho atingido.\n");
+        return;
+    }
+
+    PostoTrabalho p;
+    p.id = totalPostos;
+
+    fflush(stdin);
+    printf("ID do Funcionario Responsavel: ");
+    scanf("%d", &p.idFuncionario);
+    fflush(stdin);
+
+    printf("Nome: ");
+    gets(p.nome);
+
+    printf("Local: ");
+    gets(p.local);
+
+    printf("Secao: ");
+    gets(p.secao);
+
+    printf("Descricao: ");
+    gets(p.descricao);
+
+    postos[totalPostos] = p;
+    totalPostos++;
+
+    salvarPostosEmArquivo();
+    printf("Posto de trabalho adicionado com sucesso!\n");
+}
+
+void listarPostos() {
+    system("cls");
+    printf("\n======= Postos de Trabalho ==========\n");
+    if (totalPostos == 0) {
+        printf("Nenhum posto de trabalho cadastrado.\n");
+        return;
+    }
+
+    for (int i = 0; i < totalPostos; i++) {
+        printf("ID: %d\nID Funcionario: %d\nNome: %s\nLocal: %s\nSecao: %s\nDescricao: %s\n\n",
+               postos[i].id,
+               postos[i].idFuncionario,
+               postos[i].nome,
+               postos[i].local,
+               postos[i].secao,
+               postos[i].descricao);
+    }
+}
+
+void pesquisarPosto() {
+    char nome[50];
+
+    fflush(stdin);
+    printf("Digite o nome do posto: ");
+    gets(nome);
+
+    for (int i = 0; i < totalPostos; i++) {
+        if (strcmp(postos[i].nome, nome) == 0) {
+            printf("Encontrado:\nID: %d\nID Funcionario: %d\nNome: %s\nLocal: %s\nSecao: %s\nDescricao: %s\n",
+                   postos[i].id,
+                   postos[i].idFuncionario,
+                   postos[i].nome,
+                   postos[i].local,
+                   postos[i].secao,
+                   postos[i].descricao);
+            return;
+        }
+    }
+
+    printf("Posto de trabalho nao encontrado.\n");
+}
+
+void alterarPosto() {
+    int id;
+    printf("ID do posto a alterar: ");
+    scanf("%d", &id);
+
+    for (int i = 0; i < totalPostos; i++) {
+        if (postos[i].id == id) {
+
+            fflush(stdin);
+            printf("Novo nome: ");
+            gets(postos[i].nome);
+
             printf("Novo local: ");
             gets(postos[i].local);
-            
+
             printf("Nova secao: ");
             gets(postos[i].secao);
-			
+
             printf("Nova descricao: ");
             gets(postos[i].descricao);
 
             printf("Posto alterado com sucesso.\n");
             return;
-		}
-	}	
+        }
+    }
+
+    printf("Posto de trabalho nao encontrado.\n");
 }
-void removerPosto(){
-	int id;
+
+void removerPosto() {
+    int id;
     printf("ID do posto a remover: ");
     scanf("%d", &id);
 
-    for (int i = 1; i <= totalPostos; i++) {
+    for (int i = 0; i < totalPostos; i++) {
         if (postos[i].id == id) {
             for (int j = i; j < totalPostos - 1; j++) {
                 postos[j] = postos[j + 1];
             }
-        	totalPostos--;
-        	printf("Posto de trabalho removido com sucesso.\n");
-        	return;
-    	}
-  	}
-	 printf("Posto de trabalho nao encontrado.\n"); 
+            totalPostos--;
+            printf("Posto de trabalho removido com sucesso.\n");
+            return;
+        }
+    }
+
+    printf("Posto de trabalho nao encontrado.\n");
 }
-    
