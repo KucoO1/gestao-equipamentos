@@ -1,0 +1,46 @@
+# depslib dependency file v1.0
+1744835255 source:c:\users\administrator\documents\github\gestao-equipamentos\componentes.c
+
+1744835255 source:c:\users\administrator\documents\github\gestao-equipamentos\data.c
+
+1744835255 source:c:\users\administrator\documents\github\gestao-equipamentos\empresas.c
+
+1744835255 source:c:\users\administrator\documents\github\gestao-equipamentos\funcionarios.c
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	"data.h"
+
+1744835255 c:\users\administrator\documents\github\gestao-equipamentos\data.h
+
+1744938065 source:c:\users\administrator\documents\github\gestao-equipamentos\interface.c
+	<stdio.h>
+	"interface.h"
+	"funcionarios.h"
+	"postos.h"
+
+1744937426 c:\users\administrator\documents\github\gestao-equipamentos\interface.h
+
+1744835255 c:\users\administrator\documents\github\gestao-equipamentos\funcionarios.h
+
+1744835255 c:\users\administrator\documents\github\gestao-equipamentos\postos.h
+
+1744938020 source:c:\users\administrator\documents\github\gestao-equipamentos\operacoes.c
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	"data.h"
+
+1744835255 source:c:\users\administrator\documents\github\gestao-equipamentos\postos.c
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	"data.h"
+
+1744835255 source:c:\users\administrator\documents\github\gestao-equipamentos\util.c
+
+1744937815 source:c:\users\administrator\documents\github\gestao-equipamentos\main.c
+	<stdio.h>
+	"interface.h"
+	<stdlib.h>
+
