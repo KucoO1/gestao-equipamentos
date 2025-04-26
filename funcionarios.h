@@ -10,7 +10,6 @@ void carregarConfiguracao();
 void salvarFuncionariosEmArquivo();
 void carregarFuncionariosDoArquivo();
 void finalizar();
-
 void inicializarFuncionarios();
 void alterarLimiteFuncionarios();
 void adicionarFuncionario();

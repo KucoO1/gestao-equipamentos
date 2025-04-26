@@ -3,6 +3,10 @@
 #include "interface.h"
 #include "funcionarios.h"
 #include "postos.h"
+#include "empresas.h"
+#include "componentes.h"
+
+
 
 
 int menuPrincipal() {
@@ -19,9 +23,21 @@ int menuPrincipal() {
     return opcao;
 }
 
-void menuComponentes() {
-    printf("Menu de Componentes (em construcao)\n");
+int menuComponentes() {
+    int opcao;
+    printf("\n==== GESTÃO DE COMPONENTES ====\n");
+    printf("1. Adicionar Componente\n");
+    printf("2. Listar Componentes\n");
+    printf("3. Pesquisar Componente\n");
+    printf("4. Alterar Componente\n");
+    printf("5. Remover Componente\n");
+    printf("0. Sair\n");
+    printf("\n==============================\n");
+    printf("Escolha uma opção: ");
+    scanf("%d", &opcao);
+    return opcao;
 }
+
 
 int menuFuncionarios() {
 	int opc1;
@@ -38,9 +54,20 @@ int menuFuncionarios() {
   	return opc1;
 }
 
-void menuEmpresas() {
-    printf("Menu de Empresas (em construcao)\n");
+int menuEmpresas() {
+    int opc;
+    printf("\n==== GESTAO DE EMPRESAS ====\n");
+    printf("1. Adicionar Empresa\n");
+    printf("2. Listar Empresas\n");
+    printf("3. Pesquisar Empresa\n");
+    printf("4. Alterar Empresa\n");
+    printf("5. Remover Empresa\n");
+    printf("0. Sair\n");
+    printf("\n================================\n");
+    scanf("%d", &opc);
+    return opc;
 }
+
 
 int menuPostos() {
     int opc2;

@@ -1,4 +1,4 @@
-// main.c
+
 
 #include <stdio.h>
 #include "interface.h"
@@ -11,9 +11,40 @@ int main() {
     do {
         opcao = menuPrincipal();
         switch (opcao) {
+            case 1: 
+    system("cls");
+    do {
+        opcao = menuComponentes();  
+        switch (opcao) {
             case 1:
-                menuComponentes();
+                system("cls");
+                adicionarComponente(); 
                 break;
+            case 2:
+                listarComponentes(); 
+                break;
+            case 3:
+                system("cls");
+                pesquisarComponente(); 
+                break;
+            case 4:
+                system("cls");
+                alterarComponente(); 
+                break;
+            case 5:
+                system("cls");
+                removerComponente(); 
+                break;
+            case 0:
+                printf("Saindo do menu de componentes...\n");
+                break;
+            default:
+                printf("Opção inválida.\n");
+        }
+    } while (opcao != 0); 
+    break;
+
+
             case 2:
             	system("cls");
             	inicializarFuncionarios();
@@ -54,8 +85,40 @@ int main() {
              	finalizar();
                 break;
             case 3:
-                menuEmpresas();
+                
+    system("cls");
+    inicializarEmpresas(); 
+    do {
+        opc2 = menuEmpresas(); 
+        switch (opc2) {
+            case 1:
+                system("cls");
+                adicionarEmpresa();
                 break;
+            case 2:
+                listarEmpresas();
+                break;
+            case 3:
+                system("cls");
+                pesquisarEmpresa();
+                break;
+            case 4:
+                system("cls");
+                alterarEmpresa();
+                break;
+            case 5:
+                system("cls");
+                removerEmpresa();
+                break;
+            case 0:
+                printf("Saindo do menu de empresas...\n");
+                break;
+            default:
+                printf("Opcao invalida.\n");
+        }
+    } while (opc2 != 0);
+    break;
+
             case 4:
                 system("cls");
             	inicializarPostos();
