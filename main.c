@@ -5,12 +5,41 @@
 #include <stdlib.h>
 
 int main() {
-    int opcao, opc1, opc2;
+    int opcao, opc1, opc2,opc0,opc;
     do {
         opcao = menuPrincipal();
-        switch (opcao) {
-            case 1:
-                menuComponentes();
+    switch (opcao) {
+        case 1:
+        do {
+        	system("cls");
+        	opc0 = menuComponentes();
+        	switch (opc0) {
+          case 1:
+                system("cls");
+                adicionarComponente(); 
+                break;
+            case 2:
+                listarComponentes(); 
+                break;
+            case 3:
+                system("cls");
+                pesquisarComponente(); 
+                break;
+            case 4:
+                system("cls");
+                alterarComponente(); 
+                break;
+            case 5:
+                system("cls");
+                removerComponente(); 
+                break;
+            case 0:
+                printf("Saindo do menu de componentes...\n");
+                break;
+            	default:
+                	printf("Opção inválida.\n");
+        		}
+    		} while (opcao != 0); 
                 break;
             case 2:
             	system("cls");
@@ -52,7 +81,37 @@ int main() {
              	finalizar();
                 break;
             case 3:
-                menuEmpresas();
+                system("cls");
+    			inicializarEmpresas(); 
+    			do {
+        			opc =  menuEmpresas(); 
+        			switch (opc) {
+            			case 1:
+                			system("cls");
+                			adicionarEmpresa();
+                		break;
+            			case 2:
+                			listarEmpresas();
+               			 	break;
+            			case 3:
+                			system("cls");
+                			pesquisarEmpresa();
+                			break;
+            			case 4:
+                			system("cls");
+                			alterarEmpresa();
+                			break;
+            			case 5:
+                			system("cls");
+                			removerEmpresa();
+                		break;
+            			case 0:
+                			printf("Saindo do menu de empresas...\n");
+                			break;
+            			default:
+                			printf("Opcao invalida.\n");
+        			}
+    			} while (opc != 0);
                 break;
             case 4:
                 system("cls");
