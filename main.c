@@ -2,7 +2,13 @@
 
 #include <stdio.h>
 #include "interface.h"
+#include "funcionarios.h"
+#include "postos.h"
+#include "empresas.h"
+#include "operacoes.h"
+#include "componentes.h"
 #include <stdlib.h>
+
 
 int main() {
     int opcao, opc1, opc2,opc0,opc;
@@ -10,37 +16,41 @@ int main() {
         opcao = menuPrincipal();
     switch (opcao) {
         case 1:
-        do {
-        	system("cls");
-        	opc0 = menuComponentes();
-        	switch (opc0) {
-          case 1:
+    system("cls");
+    inicializarComponentes(); 
+    do {
+        opc0 = menuComponentes();
+        switch (opc0) {
+            case 1:
                 system("cls");
-                adicionarComponente(); 
+                adicionarComponente();
                 break;
             case 2:
-                listarComponentes(); 
+                system("cls");
+                listarComponentes();
                 break;
             case 3:
                 system("cls");
-                pesquisarComponente(); 
+                pesquisarComponente();
                 break;
             case 4:
                 system("cls");
-                alterarComponente(); 
+                alterarComponente();
                 break;
             case 5:
                 system("cls");
-                removerComponente(); 
+                removerComponente();
                 break;
             case 0:
                 printf("Saindo do menu de componentes...\n");
                 break;
-            	default:
-                	printf("Opção inválida.\n");
-        		}
-    		} while (opcao != 0); 
-                break;
+            default:
+                printf("Opcao invalida.\n");
+        }
+    } while (opc0 != 0);
+    finalizarComponentes();
+    break;
+     
             case 2:
             	system("cls");
             	inicializarFuncionarios();
