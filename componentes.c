@@ -265,7 +265,6 @@ int postoDeTrabalhoExiste(int idPosto) {
     }
     return 0; // Posto não encontrado
 }
-
 void trocarPostoComponente() {
     int id, novoIdPosto;
 
@@ -282,7 +281,7 @@ void trocarPostoComponente() {
             scanf("%d", &novoIdPosto);
 
             // Verifica se o novo posto existe
-            if (postoExiste(novoIdPosto)) {
+            if (postoDeTrabalhoExiste(novoIdPosto)) {
                 componentes[i].idPosto = novoIdPosto;
                 salvarComponentesEmArquivo();
                 printf("Componente transferido com sucesso para o posto %d.\n", novoIdPosto);
@@ -295,6 +294,7 @@ void trocarPostoComponente() {
 
     printf("Componente com ID %d nao encontrado.\n", id);
 }
+
 
 
 void removerComponente() {

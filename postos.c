@@ -3,6 +3,7 @@
 #include <string.h>
 #include "data.h"
 #include "operacoes.h"
+#include "funcionarios.h"
 
 int numeroDePostos;
 int totalPostos = 0;
@@ -94,6 +95,16 @@ void alterarLimitePostos() {
     printf("Limite de postos alterado com sucesso!\n");
 }
 
+int funcExiste(int idFuncionario) {
+    for (int i = 0; i < totalFuncionarios; i++) {
+        if (funcionarios[i].id == idFuncionario) {
+            return 1; 
+        }
+    }
+    return 0; 
+}
+
+
 void adicionarPosto() {
     if (totalPostos >= numeroDePostos) {
         printf("Limite de postos de trabalho atingido.\n");
@@ -106,8 +117,13 @@ void adicionarPosto() {
     fflush(stdin);
     printf("ID do Funcionario Responsavel: ");
     scanf("%d", &p.idFuncionario);
-    fflush(stdin);
 
+    if (!funcExiste(p.idFuncionario)) {
+        printf("Funcionario com o ID %d nao encontrado.\n", p.idFuncionario);
+        return;
+    }
+
+    fflush(stdin);
     printf("Nome: ");
     gets(p.nome);
 
@@ -126,6 +142,7 @@ void adicionarPosto() {
     salvarPostosEmArquivo();
     printf("Posto de trabalho adicionado com sucesso!\n");
 }
+
 
 void listarPostos() {
     system("cls");

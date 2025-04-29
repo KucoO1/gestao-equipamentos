@@ -2,7 +2,7 @@
 #define POSTOS_H
 
 
-extern PostoTrabalho* postos;
+//extern PostoTrabalho* postos;
 extern int totalPostos;
 
 void inicializarPostos();
