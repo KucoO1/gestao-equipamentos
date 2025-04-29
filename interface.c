@@ -19,8 +19,19 @@ int menuPrincipal() {
     return opcao;
 }
 
-void menuComponentes() {
-    printf("Menu de Componentes (em construcao)\n");
+int menuComponentes() {
+    int opc0;
+    printf("\n==== GESTAO DE COMPONENTES ====\n");
+    printf("1. Adicionar Componente\n");
+    printf("2. Listar Componentes\n");
+    printf("3. Pesquisar Componente\n");
+    printf("4. Alterar Componente\n");
+    printf("5. Remover Componente\n");
+    printf("0. Sair\n");
+    printf("\n==============================\n");
+    printf("Escolha uma opcao: ");
+    scanf("%d", &opc0);
+    return opc0;
 }
 
 int menuFuncionarios() {
@@ -38,8 +49,18 @@ int menuFuncionarios() {
   	return opc1;
 }
 
-void menuEmpresas() {
-    printf("Menu de Empresas (em construcao)\n");
+int menuEmpresas() {
+    int opc;
+    printf("\n==== GESTAO DE EMPRESAS ====\n");
+    printf("1. Adicionar Empresa\n");
+    printf("2. Listar Empresas\n");
+    printf("3. Pesquisar Empresa\n");
+    printf("4. Alterar Empresa\n");
+    printf("5. Remover Empresa\n");
+    printf("0. Sair\n");
+    printf("\n================================\n");
+    scanf("%d", &opc);
+    return opc;
 }
 
 int menuPostos() {
@@ -65,9 +86,30 @@ int menuOperacoes() {
     printf("3. Pesquisar Operacoes\n");
     printf("4. Alterar Operacao\n");
     printf("5. Remover Operacao\n");
+    printf("6. Consultas\n");
     printf("0. Sair\n");
     printf("Opcao: ");
     scanf("%d", &opc3);
+    
+    
 
     return opc3;
+}
+
+// Submenu para Consultas específicas
+int menuConsultas() {
+	int opc4;
+    
+        printf("\n=== Menu de Consultas ===\n");
+        printf("1. Componentes que ultrapassaram a data prevista de chegada\n");
+        printf("2. Componentes por Posto de Trabalho\n");
+        printf("3. Componentes fora do Posto de Trabalho (em operacoes)\n");
+        printf("4. Componentes presentes no Posto de Trabalho\n");
+        printf("5. Pesquisar Empresas ou Componentes (por nome, ID ou numero de serie)\n");
+        printf("0. Voltar ao menu de operacoes\n");
+        printf("Opcao: ");
+        scanf("%d", &opc4);
+        
+	
+	return opc4;
 }

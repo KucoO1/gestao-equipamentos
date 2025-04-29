@@ -4,9 +4,10 @@
 #define INTERFACE_H
 
 int menuPrincipal();
-void menuComponentes();
+int menuComponentes();
 int menuFuncionarios();
-void menuEmpresas();
+int menuEmpresas();
 int menuPostos();
 int menuOperacoes();
+int menuConsultas();
 #endif
