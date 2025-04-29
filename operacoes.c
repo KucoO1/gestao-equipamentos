@@ -1,7 +1,12 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <time.h>
 #include "data.h"
+#include "postos.h"
+#include "empresas.h"
+#include "componentes.h"
+
 
 
 
@@ -87,6 +92,210 @@ int operacaoExiste(int id) {
     return idExiste("operacoes.txt", id);
 }
 
+// Listagem detalhada
+
+
+// Função auxiliar para comparar datas no formato "dd/mm/yyyy"
+int compararDatas(const char *data1, const char *data2) {
+    int dia1, mes1, ano1;
+    int dia2, mes2, ano2;
+
+    sscanf(data1, "%d/%d/%d", &dia1, &mes1, &ano1);
+    sscanf(data2, "%d/%d/%d", &dia2, &mes2, &ano2);
+
+    if (ano1 != ano2)
+        return ano1 - ano2;
+    if (mes1 != mes2)
+        return mes1 - mes2;
+    return dia1 - dia2;
+}
+
+// Função para obter a data atual no formato "dd/mm/yyyy"
+void obterDataAtual(char *dataHoje) {
+    time_t t = time(NULL);
+    struct tm tm = *localtime(&t);
+    sprintf(dataHoje, "%02d/%02d/%04d", tm.tm_mday, tm.tm_mon + 1, tm.tm_year + 1900);
+}
+
+// Função para listar componentes com data prevista ultrapassada
+void listarComponentesAtrasados() {
+    char hoje[11];
+    obterDataAtual(hoje);
+
+    printf("\n=== Componentes que ultrapassaram a data prevista de chegada ===\n");
+    int encontrou = 0;
+    for (int i = 0; i < totalOperacoes; i++) {
+        if (operacoes[i].dataPrevista[0] != '\0' && compararDatas(hoje, operacoes[i].dataPrevista) > 0) {
+            printf("Componente ID: %d | Posto de Trabalho ID: %d | Data Prevista: %s\n",
+                   operacoes[i].idComponente, operacoes[i].idPosto, operacoes[i].dataPrevista);
+            encontrou = 1;
+        }
+    }
+    if (!encontrou) {
+        printf("Nenhum componente ultrapassou a data prevista.\n");
+    }
+}
+
+//Listagem de componentes (e sua condição) por Posto de Trabalho
+
+void listarComponentesPorPosto() {
+    printf("\n=== Componentes por Posto de Trabalho ===\n");
+
+    if (totalComponentes == 0 || componentes == NULL) {
+        printf("Nenhum componente cadastrado.\n");
+        return;
+    }
+
+    for (int i = 0; i < totalComponentes; i++) {
+        printf("Posto de Trabalho ID: %d\n", componentes[i].idPosto);
+        printf(" -> Componente ID: %d | Designacao: %s | Condicao: %s\n",
+               componentes[i].id, componentes[i].designacao, componentes[i].condicao);
+    }
+}
+
+
+// Função para listar componentes que estão fora (em reparação, garantia, etc.)
+void listarComponentesFora() {
+    printf("\n=== Componentes Fora do Posto de Trabalho ===\n");
+    int encontrado = 0;
+    
+    for (int i = 0; i < totalComponentes; i++) {
+        int componenteEstaFora = 0;
+
+        for (int j = 0; j < totalOperacoes; j++) {
+            if (operacoes[j].idComponente == componentes[i].id) {
+                // Se há data de saída e não há data de chegada → ainda fora
+                if (strlen(operacoes[j].dataSaida) > 0 && strlen(operacoes[j].dataChegada) == 0) {
+                    componenteEstaFora = 1;
+                    break;
+                }
+            }
+        }
+
+        if (componenteEstaFora) {
+            printf("ID: %d | Designacao: %s | Condicao: %s\n", componentes[i].id, componentes[i].designacao, componentes[i].condicao);
+            encontrado = 1;
+        }
+    }
+
+    if (!encontrado) {
+        printf("Nenhum componente encontrado fora do posto.\n");
+    }
+}
+
+// Função para listar componentes que estão no posto de trabalho
+void listarComponentesNoPosto() {
+    printf("\n=== Componentes Presentes no Posto de Trabalho ===\n");
+    int encontrado = 0;
+
+    for (int i = 0; i < totalComponentes; i++) {
+        int componenteEstaFora = 0;
+
+        for (int j = 0; j < totalOperacoes; j++) {
+            if (operacoes[j].idComponente == componentes[i].id) {
+                if (strlen(operacoes[j].dataSaida) > 0 && strlen(operacoes[j].dataChegada) == 0) {
+                    componenteEstaFora = 1;
+                    break;
+                }
+            }
+        }
+
+        if (!componenteEstaFora) {
+            printf("ID: %d | Designacao: %s | Condicao: %s\n", componentes[i].id, componentes[i].designacao, componentes[i].condicao);
+            encontrado = 1;
+        }
+    }
+
+    if (!encontrado) {
+        printf("Nenhum componente encontrado no posto de trabalho.\n");
+    }
+}
+
+//Pesquisar empresas
+
+void pesquisarEmpresas() {
+    char termo[50];
+    printf("Digite nome ou ID da empresa a pesquisar: ");
+    scanf(" %[^\n]", termo);
+
+    int idBusca = atoi(termo); // "ASCII to Integer" - converte uma string (texto) que representa um número em um inteiro (int).
+    int encontrou = 0;
+    
+    //A função strstr "string string", procura uma substring dentro de outra string.
+    
+    /*strstr(str1, str2) busca a primeira ocorrência da str2 dentro de str1.
+Se encontrar, retorna um ponteiro para o início da ocorrência.
+Se não encontrar, retorna NULL.*/
+
+    for (int i = 0; i < totalEmpresas; i++) {
+        if (empresas[i].id == idBusca || strstr(empresas[i].nome, termo) != NULL) {
+            printf("\n=== Empresa Encontrada ===\n");
+            printf("ID: %d\n", empresas[i].id);
+            printf("Nome: %s\n", empresas[i].nome);
+            printf("Tipo: %s\n", empresas[i].tipo);
+            printf("Contacto: %s\n", empresas[i].contacto);
+            encontrou = 1;
+        }
+    }
+
+    if (!encontrou)
+        printf("Nenhuma empresa encontrada.\n");
+}
+
+//Pesqusar empresas
+
+void pesquisarComponentes() {
+    char termo[50];
+    printf("Digite nome, ID ou numero de serie do componente a pesquisar: ");
+    scanf(" %[^\n]", termo);
+
+    int idBusca = atoi(termo);
+    int encontrou = 0;
+
+    for (int i = 0; i < totalComponentes; i++) {
+        if (componentes[i].id == idBusca ||
+            strstr(componentes[i].designacao, termo) != NULL ||
+            strstr(componentes[i].numeroSerie, termo) != NULL) {
+
+            printf("\n=== Componente Encontrado ===\n");
+            printf("ID: %d\n", componentes[i].id);
+            printf("Designacao: %s\n", componentes[i].designacao);
+            printf("Numero de Serie: %s\n", componentes[i].numeroSerie);
+            printf("Condicao: %s\n", componentes[i].condicao);
+            printf("ID Posto: %d\n", componentes[i].idPosto);
+            encontrou = 1;
+        }
+    }
+
+    if (!encontrou)
+        printf("Nenhum componente encontrado.\n");
+}
+
+void PesquisarEmpresaComponente(){
+	
+    int escolha;
+    printf("Pesquisar por:\n1. Empresa\n2. Componente\nOpcao: ");
+    scanf("%d", &escolha);
+    
+    if(escolha == 1)
+    {
+    	pesquisarEmpresas();
+    	return;
+	}
+	else if(escolha == 2)
+	{
+
+		pesquisarComponentes();
+		return;	
+		
+	}
+	else {
+        printf("Opcao invalida.\n");
+        return;
+    }
+
+	
+}
 
 
 /*--------------  Inserir Operações  --------------*/
@@ -124,7 +333,7 @@ do {
     scanf("%d", &nova.idEmpresa);
     
     if (!empresaExiste(nova.idEmpresa)) {
-        printf("Posto de trabalho nao encontrado! Tente novamente.\n");
+        printf("Empresa nao encontrada! Tente novamente.\n");
     }
 } while (!empresaExiste(nova.idEmpresa));
    

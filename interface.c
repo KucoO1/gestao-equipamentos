@@ -26,7 +26,8 @@ int menuComponentes() {
     printf("2. Listar Componentes\n");
     printf("3. Pesquisar Componente\n");
     printf("4. Alterar Componente\n");
-    printf("5. Remover Componente\n");
+    printf("5. Alterar o posto de trabalho para um componente\n");
+    printf("6. Remover Componente\n");
     printf("0. Sair\n");
     printf("\n==============================\n");
     printf("Escolha uma opcao: ");
@@ -86,9 +87,30 @@ int menuOperacoes() {
     printf("3. Pesquisar Operacoes\n");
     printf("4. Alterar Operacao\n");
     printf("5. Remover Operacao\n");
+    printf("6. Consultas\n");
     printf("0. Sair\n");
     printf("Opcao: ");
     scanf("%d", &opc3);
+    
+    
 
     return opc3;
+}
+
+// Submenu para Consultas específicas
+int menuConsultas() {
+	int opc4;
+    
+        printf("\n=== Menu de Consultas ===\n");
+        printf("1. Componentes que ultrapassaram a data prevista de chegada\n");
+        printf("2. Componentes por Posto de Trabalho\n");
+        printf("3. Componentes fora do Posto de Trabalho (em operacoes)\n");
+        printf("4. Componentes presentes no Posto de Trabalho\n");
+        printf("5. Pesquisar Empresas ou Componentes (por nome, ID ou numero de serie)\n");
+        printf("0. Voltar ao menu de operacoes\n");
+        printf("Opcao: ");
+        scanf("%d", &opc4);
+        
+	
+	return opc4;
 }

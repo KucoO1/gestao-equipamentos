@@ -1,44 +1,58 @@
+
+#include <locale.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <locale.h>
-#include "data.h"  
+#include "data.h"
+#include "postos.h"
 
-Componente* componentes;
+int numeroDeComponentes;
 int totalComponentes = 0;
 
-void inicializarComponentes() {
-    componentes = (Componente*)malloc(MAX * sizeof(Componente));
-    if (componentes == NULL) {
-        printf("Erro ao alocar memoria para componentes.\n");
-        exit(1);
+Componente* componentes = NULL;
+
+
+void salvarConfiguracaoComponentes() {
+    FILE *arquivo = fopen("config_componentes.txt", "w");
+    if (arquivo == NULL) {
+        printf("Erro ao salvar a configuracao dos componentes.\n");
+        return;
     }
-    carregarComponentesDoArquivo();
+    fprintf(arquivo, "%d\n", numeroDeComponentes);
+    fclose(arquivo);
 }
 
-void finalizarComponentes() {
-    salvarComponentesEmArquivo();
-    free(componentes);
+void carregarConfiguracaoComponentes() {
+    FILE *arquivo = fopen("config_componentes.txt", "r");
+    if (arquivo == NULL) {
+        printf("Digite o numero maximo de componentes: ");
+        scanf("%d", &numeroDeComponentes);
+        salvarConfiguracaoComponentes();
+    } else {
+        fscanf(arquivo, "%d", &numeroDeComponentes);
+        fclose(arquivo);
+    }
 }
 
 void salvarComponentesEmArquivo() {
     FILE *arquivo = fopen("componentes.txt", "w");
     if (arquivo == NULL) {
-        printf("Erro ao salvar componentes em arquivo.\n");
+        printf("Erro ao abrir o arquivo de componentes para escrita.\n");
         return;
     }
 
     for (int i = 0; i < totalComponentes; i++) {
-        fprintf(arquivo, "%d;%s;%s;%s;%d;%d;%d;%s;%s;%s\n", 
-                componentes[i].id, 
-                componentes[i].designacao, 
-                componentes[i].numeroSerie, 
+        fprintf(arquivo, "%d;%s;%s;%s;%d;%d;%d;%s;%s;%d;%s\n",
+                componentes[i].id,
+                componentes[i].designacao,
+                componentes[i].numeroSerie,
                 componentes[i].dataAquisicao,
                 componentes[i].garantiaMeses,
                 componentes[i].idFornecedor,
                 componentes[i].idFabricante,
                 componentes[i].tipo,
                 componentes[i].condicao,
+                componentes[i].idPosto,
                 componentes[i].observacoes);
     }
 
@@ -48,10 +62,11 @@ void salvarComponentesEmArquivo() {
 void carregarComponentesDoArquivo() {
     FILE *arquivo = fopen("componentes.txt", "r");
     if (arquivo == NULL) {
-        return; 
+        return;
     }
 
-    while (fscanf(arquivo, "%d;%[^;];%[^;];%[^;];%d;%d;%d;%[^;];%[^;];%[^\n]\n", 
+    totalComponentes = 0;
+    while (fscanf(arquivo, "%d;%[^;];%[^;];%[^;];%d;%d;%d;%[^;];%[^;];%d;%[^\n]\n",
                   &componentes[totalComponentes].id,
                   componentes[totalComponentes].designacao,
                   componentes[totalComponentes].numeroSerie,
@@ -61,38 +76,64 @@ void carregarComponentesDoArquivo() {
                   &componentes[totalComponentes].idFabricante,
                   componentes[totalComponentes].tipo,
                   componentes[totalComponentes].condicao,
-                  componentes[totalComponentes].observacoes) == 10) {
+                  &componentes[totalComponentes].idPosto,
+                  componentes[totalComponentes].observacoes) == 11) {
         totalComponentes++;
     }
 
     fclose(arquivo);
 }
 
+void finalizarComponentes() {
+    salvarComponentesEmArquivo();
+    free(componentes);
+}
+
+
+void inicializarComponentes() {
+    carregarConfiguracaoComponentes();
+    componentes = (Componente*)malloc(numeroDeComponentes * sizeof(Componente));
+    carregarComponentesDoArquivo();
+}
+
+void alterarLimiteComponentes() {
+    printf("Digite o novo limite de componentes: ");
+    scanf("%d", &numeroDeComponentes);
+    componentes = (Componente*)realloc(componentes, numeroDeComponentes * sizeof(Componente));
+    salvarConfiguracaoComponentes();
+    printf("Limite de componentes alterado com sucesso!\n");
+}
+
 void adicionarComponente() {
-    if (totalComponentes >= MAX) {
+    if (totalComponentes >= numeroDeComponentes) {
         printf("Limite de componentes atingido.\n");
         return;
     }
 
     Componente c;
-    c.id = totalComponentes + 1;
-     printf("Designacao: ");
+    c.id = totalComponentes;
+
+    fflush(stdin);
+    printf("Designacao: ");
     gets(c.designacao);
 
     printf("Numero de Serie: ");
     gets(c.numeroSerie);
 
-    printf("Data de Aquisicao (dd/mm/aaaa): ");
+    printf("Data de Aquisicao (dd/mm/yyyy): ");
     gets(c.dataAquisicao);
 
-    printf("Garantia (meses): ");
+    printf("Garantia (em meses): ");
     scanf("%d", &c.garantiaMeses);
+    fflush(stdin);
 
     printf("ID do Fornecedor: ");
     scanf("%d", &c.idFornecedor);
+    fflush(stdin);
 
     printf("ID do Fabricante: ");
     scanf("%d", &c.idFabricante);
+    fflush(stdin);
 
     printf("Tipo: ");
     gets(c.tipo);
@@ -100,49 +141,65 @@ void adicionarComponente() {
     printf("Condicao (Novo/Usado): ");
     gets(c.condicao);
 
+    printf("ID do Posto de Trabalho: ");
+    scanf("%d", &c.idPosto);
+    fflush(stdin);
+
     printf("Observacoes: ");
     gets(c.observacoes);
 
-    componentes[totalComponentes++] = c;
+    componentes[totalComponentes] = c;
+    totalComponentes++;
+
     salvarComponentesEmArquivo();
     printf("Componente adicionado com sucesso!\n");
 }
 
 void listarComponentes() {
-    printf("\n==== LISTA DE COMPONENTES ====\n");
+    system("cls");
+    printf("\n======= COMPONENTES ==========\n");
     if (totalComponentes == 0) {
         printf("Nenhum componente cadastrado.\n");
         return;
     }
 
     for (int i = 0; i < totalComponentes; i++) {
-        printf("ID: %d | Designacao: %s | Nº Série: %s | Data Aquisicao: %s | Garantia: %d meses | Tipo: %s | Condicao: %s\n", 
-                componentes[i].id, 
-                componentes[i].designacao,
-                componentes[i].numeroSerie, 
-                componentes[i].dataAquisicao,
-                componentes[i].garantiaMeses,
-                componentes[i].tipo, 
-                componentes[i].condicao);
+        printf("ID: %d\nDesignacao: %s\nNumero de Serie: %s\nData de Aquisicao: %s\nGarantia (meses): %d\nID Fornecedor: %d\nID Fabricante: %d\nTipo: %s\nCondicao: %s\nID Posto: %d\nObservacoes: %s\n\n",
+               componentes[i].id,
+               componentes[i].designacao,
+               componentes[i].numeroSerie,
+               componentes[i].dataAquisicao,
+               componentes[i].garantiaMeses,
+               componentes[i].idFornecedor,
+               componentes[i].idFabricante,
+               componentes[i].tipo,
+               componentes[i].condicao,
+               componentes[i].idPosto,
+               componentes[i].observacoes);
     }
 }
 
 void pesquisarComponente() {
-    int id;
-    printf("ID do componente a pesquisar: ");
-    scanf("%d", &id);
+    char designacao[50];
+
+    fflush(stdin);
+    printf("Digite a designacao do componente: ");
+    gets(designacao);
 
     for (int i = 0; i < totalComponentes; i++) {
-        if (componentes[i].id == id) {
-            printf("ID: %d | Designacao: %s | Nº Serie: %s | Data Aquisicao: %s | Garantia: %d meses | Tipo: %s | Condicao: %s | Observacoes: %s\n", 
-                    componentes[i].id, 
-                    componentes[i].designacao,
-                    componentes[i].numeroSerie, 
-                    componentes[i].dataAquisicao,
-                    componentes[i].garantiaMeses,
-                    componentes[i].tipo, 
-                    componentes[i].condicao,
-                    componentes[i].observacoes);
+        if (strcmp(componentes[i].designacao, designacao) == 0) {
+            printf("Encontrado:\nID: %d\nDesignacao: %s\nNumero de Serie: %s\nData de Aquisicao: %s\nGarantia (meses): %d\nID Fornecedor: %d\nID Fabricante: %d\nTipo: %s\nCondicao: %s\nID Posto: %d\nObservacoes: %s\n",
+                   componentes[i].id,
+                   componentes[i].designacao,
+                   componentes[i].numeroSerie,
+                   componentes[i].dataAquisicao,
+                   componentes[i].garantiaMeses,
+                   componentes[i].idFornecedor,
+                   componentes[i].idFabricante,
+                   componentes[i].tipo,
+                   componentes[i].condicao,
+                   componentes[i].idPosto,
+                   componentes[i].observacoes);
             return;
         }
     }
@@ -157,43 +214,88 @@ void alterarComponente() {
 
     for (int i = 0; i < totalComponentes; i++) {
         if (componentes[i].id == id) {
-            printf("Nova designacao: ");
-			gets(componentes[i].designacao);
+            fflush(stdin);
+            printf("Nova Designacao: ");
+            gets(componentes[i].designacao);
 
-			printf("Novo numero de serie: ");
-			gets(componentes[i].numeroSerie);
+            printf("Novo Numero de Serie: ");
+            gets(componentes[i].numeroSerie);
 
-			printf("Nova data de aquisicao: ");
-			gets(componentes[i].dataAquisicao);
+            printf("Nova Data de Aquisicao: ");
+            gets(componentes[i].dataAquisicao);
 
-			printf("Nova garantia (meses): ");
-			scanf("%d", &componentes[i].garantiaMeses);
+            printf("Nova Garantia (em meses): ");
+            scanf("%d", &componentes[i].garantiaMeses);
+            fflush(stdin);
 
-			printf("Novo ID do fornecedor: ");
-			scanf("%d", &componentes[i].idFornecedor);
+            printf("Novo ID Fornecedor: ");
+            scanf("%d", &componentes[i].idFornecedor);
+            fflush(stdin);
 
-			printf("Novo ID do fabricante: ");
-			scanf("%d", &componentes[i].idFabricante);
+            printf("Novo ID Fabricante: ");
+            scanf("%d", &componentes[i].idFabricante);
+            fflush(stdin);
 
-			getchar(); 
+            printf("Novo Tipo: ");
+            gets(componentes[i].tipo);
 
-			printf("Novo tipo: ");
-			gets(componentes[i].tipo);
+            printf("Nova Condicao: ");
+            gets(componentes[i].condicao);
 
-			printf("Nova condicao (Novo/Usado): ");
-			gets(componentes[i].condicao);
+            printf("Novo ID Posto de Trabalho: ");
+            scanf("%d", &componentes[i].idPosto);
+            fflush(stdin);
 
-			printf("Novas observacoes: ");
-			gets(componentes[i].observacoes);
+            printf("Novas Observacoes: ");
+            gets(componentes[i].observacoes);
 
-			salvarComponentesEmArquivo();
-			printf("Componente alterado com sucesso.\n");
+            printf("Componente alterado com sucesso.\n");
             return;
         }
     }
 
     printf("Componente nao encontrado.\n");
 }
+
+int postoDeTrabalhoExiste(int idPosto) {
+    for (int i = 0; i < totalPostos; i++) {
+        if (postos[i].id == idPosto) {
+            return 1; // Posto encontrado
+        }
+    }
+    return 0; // Posto não encontrado
+}
+
+void trocarPostoComponente() {
+    int id, novoIdPosto;
+
+    printf("Digite o ID do componente que deseja transferir: ");
+    scanf("%d", &id);
+
+    // Verifica se o componente existe
+    for (int i = 0; i < totalComponentes; i++) {
+        if (componentes[i].id == id) {
+            printf("Componente encontrado. Posto atual: %d\n", componentes[i].idPosto);
+            
+            // Pede o novo ID do posto
+            printf("Digite o novo ID do posto de trabalho: ");
+            scanf("%d", &novoIdPosto);
+
+            // Verifica se o novo posto existe
+            if (postoExiste(novoIdPosto)) {
+                componentes[i].idPosto = novoIdPosto;
+                salvarComponentesEmArquivo();
+                printf("Componente transferido com sucesso para o posto %d.\n", novoIdPosto);
+            } else {
+                printf("Posto de trabalho com ID %d nao encontrado.\n", novoIdPosto);
+            }
+            return;
+        }
+    }
+
+    printf("Componente com ID %d nao encontrado.\n", id);
+}
+
 
 void removerComponente() {
     int id;
@@ -206,7 +308,6 @@ void removerComponente() {
                 componentes[j] = componentes[j + 1];
             }
             totalComponentes--;
-            salvarComponentesEmArquivo();
             printf("Componente removido com sucesso.\n");
             return;
         }

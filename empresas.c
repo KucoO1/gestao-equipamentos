@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include "data.h"
+#include "operacoes.h"
 
 int numeroDeEmpresas;
 int totalEmpresas = 0;
@@ -183,12 +184,30 @@ void alterarEmpresa() {
     printf("Empresa nao encontrada.\n");
 }
 
+
+int empresaEstaEmOperacoes(int idEmpresa) {
+    for (int i = 0; i < totalOperacoes; i++) {
+        if (operacoes[i].idEmpresa == idEmpresa) {
+            return 1; 
+        }
+    }
+    return 0; 
+}
+
+
 void removerEmpresa() {
     int id;
     printf("ID da empresa a remover: ");
     scanf("%d", &id);
 
-    for (int i = 0; i < totalEmpresas; i++) {
+  if(empresaEstaEmOperacoes(id)) {
+        printf("Erro: Esta empresa esta associada a uma ou mais operacoes. Nao pode ser removida.\n");
+        return;
+    }
+    else
+    {
+       for (int i = 0; i < totalEmpresas; i++) 
+	   {
         if (empresas[i].id == id) {
             for (int j = i; j < totalEmpresas - 1; j++) {
                 empresas[j] = empresas[j + 1];
@@ -198,6 +217,9 @@ void removerEmpresa() {
             printf("Empresa removida com sucesso.\n");
             return;
         }
-    }
+      }
+	}
+
+    
     printf("Empresa nao encontrada.\n");
 }
