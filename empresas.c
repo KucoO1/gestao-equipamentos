@@ -6,7 +6,7 @@
 
 int numeroDeEmpresas;
 int totalEmpresas = 0;
-Empresa* empresas;
+Empresa* empresas = NULL;
 
 //-------------------------------------- Base de dados (arquivos em txt) ----------------------------------------
 
@@ -91,6 +91,7 @@ void alterarLimiteEmpresas() {
 void finalizarEmpresas() {
     salvarEmpresasEmArquivo();
     free(empresas);
+    empresas = NULL;
 }
 
 //--------------------------------------------------------------------------------------------------------------

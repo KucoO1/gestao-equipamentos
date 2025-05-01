@@ -17,6 +17,7 @@ void listarComponentesPorPosto();
 void listarComponentesFora();
 void listarComponentesNoPosto();
 void PesquisarEmpresaComponente();
+void finalizarOperacoes();
 
 
 #endif

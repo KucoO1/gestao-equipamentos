@@ -8,7 +8,7 @@
 int numeroDePostos;
 int totalPostos = 0;
 
-PostoTrabalho* postos;
+PostoTrabalho* postos = NULL;
 
 //----------------------------- Base de dados (arquivos em txt) para Postos ------------------------------
 
@@ -77,6 +77,7 @@ void carregarPostosDoArquivo() {
 void finalizarPostos() {
     salvarPostosEmArquivo();
     free(postos);
+    postos = NULL;
 }
 
 //---------------------------------------------------------------------------------------------------------

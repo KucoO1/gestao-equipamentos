@@ -6,7 +6,7 @@
 int numeroDeFuncionarios;
 int totalFuncionarios=0;
 
-Funcionario* funcionarios;
+Funcionario* funcionarios = NULL;
 
 //-------------------------------------- Base de dados (arquivos em txt) ----------------------------------------
 void salvarConfiguracao() {
@@ -66,9 +66,10 @@ void carregarFuncionariosDoArquivo() {
     fclose(arquivo);
 }
 
-void finalizar() {
+void finalizarFuncionarios() {
     salvarFuncionariosEmArquivo();
     free(funcionarios);
+    funcionarios = NULL;
 }
 
 //--------------------------------------------------------------------------------------------------------------

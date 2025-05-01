@@ -10,7 +10,7 @@
 
 
 
-Operacao *operacoes;
+Operacao *operacoes = NULL;
 int totalOperacoes = 0;
 
 // Base da dados em arquivo .txt
@@ -43,11 +43,26 @@ void carregarOperacoesDoArquivo() {
                   &temp.numeroInterno, temp.numeroExterno, &temp.idPosto, &temp.idComponente, &temp.idEmpresa,
                   temp.tipoOperacao, temp.dataSaida, temp.dataChegada, temp.dataPrevista,
                   &temp.idFuncionario, temp.dataOperacao, &temp.montante, temp.observacoes) == 13) {
-        operacoes = realloc(operacoes, (totalOperacoes + 1) * sizeof(Operacao));
-        operacoes[totalOperacoes++] = temp;
+        Operacao *novo = realloc(operacoes, (totalOperacoes + 1) * sizeof(Operacao));
+		
+		if (novo == NULL) 
+		{
+   		 printf("Erro ao alocar memória para operação.\n");
+   		 break; 
+		}
+		operacoes = novo;
+		operacoes[totalOperacoes++] = temp;
     }
 
     fclose(arquivo);
+}
+
+void finalizarOperacoes() {
+	
+    salvarOperacoesEmArquivo();
+    free(operacoes);
+    operacoes = NULL;
+	
 }
 
 // Validações 

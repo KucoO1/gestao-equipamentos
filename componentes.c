@@ -87,6 +87,7 @@ void carregarComponentesDoArquivo() {
 void finalizarComponentes() {
     salvarComponentesEmArquivo();
     free(componentes);
+    componentes = NULL;
 }
 
 
