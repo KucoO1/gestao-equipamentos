@@ -2,6 +2,8 @@
 #include <stdlib.h>
 #include <string.h>
 #include "data.h"
+#include "operacoes.h"
+#include "funcionarios.h"
 
 int numeroDePostos;
 int totalPostos = 0;
@@ -93,6 +95,16 @@ void alterarLimitePostos() {
     printf("Limite de postos alterado com sucesso!\n");
 }
 
+int funcExiste(int idFuncionario) {
+    for (int i = 0; i < totalFuncionarios; i++) {
+        if (funcionarios[i].id == idFuncionario) {
+            return 1; 
+        }
+    }
+    return 0; 
+}
+
+
 void adicionarPosto() {
     if (totalPostos >= numeroDePostos) {
         printf("Limite de postos de trabalho atingido.\n");
@@ -105,8 +117,13 @@ void adicionarPosto() {
     fflush(stdin);
     printf("ID do Funcionario Responsavel: ");
     scanf("%d", &p.idFuncionario);
-    fflush(stdin);
 
+    if (!funcExiste(p.idFuncionario)) {
+        printf("Funcionario com o ID %d nao encontrado.\n", p.idFuncionario);
+        return;
+    }
+
+    fflush(stdin);
     printf("Nome: ");
     gets(p.nome);
 
@@ -125,6 +142,7 @@ void adicionarPosto() {
     salvarPostosEmArquivo();
     printf("Posto de trabalho adicionado com sucesso!\n");
 }
+
 
 void listarPostos() {
     system("cls");
@@ -197,10 +215,24 @@ void alterarPosto() {
     printf("Posto de trabalho nao encontrado.\n");
 }
 
+int postoEmUso(int idPosto) {
+    for (int i = 0; i < totalOperacoes; i++) {
+        if (operacoes[i].idPosto == idPosto) {
+            return 1; 
+        }
+    }
+    return 0; 
+}
+
 void removerPosto() {
     int id;
     printf("ID do posto a remover: ");
     scanf("%d", &id);
+
+    if (postoEmUso(id)) {
+        printf("Este posto de trabalho esta associado a uma ou mais operacoees e nao pode ser removido.\n");
+        return;
+    }
 
     for (int i = 0; i < totalPostos; i++) {
         if (postos[i].id == id) {
@@ -208,10 +240,11 @@ void removerPosto() {
                 postos[j] = postos[j + 1];
             }
             totalPostos--;
+            salvarPostosEmArquivo(); 
             printf("Posto de trabalho removido com sucesso.\n");
             return;
         }
     }
-
     printf("Posto de trabalho nao encontrado.\n");
 }
+

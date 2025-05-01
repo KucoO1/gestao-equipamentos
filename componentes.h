@@ -18,7 +18,9 @@ void alterarLimiteComponentes();
 void adicionarComponente();
 void listarComponentes();
 void pesquisarComponente();
+
 void alterarComponente();
+void trocarPostoComponente();
 void removerComponente();
 
 #endif

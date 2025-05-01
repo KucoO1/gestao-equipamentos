@@ -3,6 +3,9 @@
 #ifndef FUNCIONARIOS_H
 #define FUNCIONARIOS_H
 
+//extern Funcionario* funcionarios;
+extern int totalFuncionarios;
+
 int menuPrincipal();
 
 void salvarConfiguracao();

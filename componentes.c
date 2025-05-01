@@ -4,6 +4,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include "data.h"
+#include "postos.h"
 
 int numeroDeComponentes;
 int totalComponentes = 0;
@@ -255,6 +256,46 @@ void alterarComponente() {
 
     printf("Componente nao encontrado.\n");
 }
+
+int postoDeTrabalhoExiste(int idPosto) {
+    for (int i = 0; i < totalPostos; i++) {
+        if (postos[i].id == idPosto) {
+            return 1; // Posto encontrado
+        }
+    }
+    return 0; // Posto não encontrado
+}
+void trocarPostoComponente() {
+    int id, novoIdPosto;
+
+    printf("Digite o ID do componente que deseja transferir: ");
+    scanf("%d", &id);
+
+    // Verifica se o componente existe
+    for (int i = 0; i < totalComponentes; i++) {
+        if (componentes[i].id == id) {
+            printf("Componente encontrado. Posto atual: %d\n", componentes[i].idPosto);
+            
+            // Pede o novo ID do posto
+            printf("Digite o novo ID do posto de trabalho: ");
+            scanf("%d", &novoIdPosto);
+
+            // Verifica se o novo posto existe
+            if (postoDeTrabalhoExiste(novoIdPosto)) {
+                componentes[i].idPosto = novoIdPosto;
+                salvarComponentesEmArquivo();
+                printf("Componente transferido com sucesso para o posto %d.\n", novoIdPosto);
+            } else {
+                printf("Posto de trabalho com ID %d nao encontrado.\n", novoIdPosto);
+            }
+            return;
+        }
+    }
+
+    printf("Componente com ID %d nao encontrado.\n", id);
+}
+
+
 
 void removerComponente() {
     int id;

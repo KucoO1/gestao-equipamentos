@@ -13,6 +13,7 @@
 int main() {
     int opcao, opc1, opc2,opc0,opc;
     do {
+    	system("cls");
         opcao = menuPrincipal();
     switch (opcao) {
         case 1:
@@ -38,6 +39,11 @@ int main() {
                 alterarComponente();
                 break;
             case 5:
+                system("cls");
+                inicializarPostos();
+                trocarPostoComponente();
+                break;
+            case 6:
                 system("cls");
                 removerComponente();
                 break;
@@ -147,6 +153,7 @@ int main() {
              			break;
              		case 5:
              			system("cls");
+             			carregarOperacoesDoArquivo();
              			removerPosto();
              			break;
              		case 0:
@@ -187,7 +194,6 @@ int main() {
              			// Submenu para consultas específicas
              			case 6: 
              			system("cls");
-             			
              			inicializarComponentes(); 
              			inicializarEmpresas(); 
              			do {

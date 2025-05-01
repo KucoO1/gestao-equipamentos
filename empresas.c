@@ -188,10 +188,10 @@ void alterarEmpresa() {
 int empresaEstaEmOperacoes(int idEmpresa) {
     for (int i = 0; i < totalOperacoes; i++) {
         if (operacoes[i].idEmpresa == idEmpresa) {
-            return 1; // Encontrada ligação
+            return 1; 
         }
     }
-    return 0; // Sem ligação
+    return 0; 
 }
 
 

@@ -26,7 +26,8 @@ int menuComponentes() {
     printf("2. Listar Componentes\n");
     printf("3. Pesquisar Componente\n");
     printf("4. Alterar Componente\n");
-    printf("5. Remover Componente\n");
+    printf("5. Alterar o posto de trabalho para um componente\n");
+    printf("6. Remover Componente\n");
     printf("0. Sair\n");
     printf("\n==============================\n");
     printf("Escolha uma opcao: ");

@@ -31,10 +31,10 @@
 [Editors]
 <<<<<<< HEAD
 Order=0,12,9,8,11,13,4,3,1,6,5,14
-Focused=12
+Focused=0
 [Editor_0]
-CursorCol=37
-CursorRow=117
+CursorCol=31
+CursorRow=196
 TopLine=171
 =======
 Order=14,12,9,0,11
@@ -80,7 +80,7 @@ LeftChar=1
 [Editor_6]
 CursorCol=20
 CursorRow=218
-TopLine=186
+TopLine=185
 LeftChar=1
 [Editor_7]
 CursorCol=18
@@ -103,7 +103,7 @@ CursorRow=12
 TopLine=1
 LeftChar=1
 [Editor_11]
-CursorCol=17
+CursorCol=1
 CursorRow=96
 TopLine=75
 =======
