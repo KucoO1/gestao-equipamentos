@@ -12,13 +12,22 @@
 
 int main() {
     int opcao, opc1, opc2,opc0,opc;
+    
+    // Inicialização global dos ficheiros na memória para garantir a consistência dos dados e evitar vazamentos dde memória 
+    
+    inicializarComponentes(); 
+    inicializarFuncionarios();
+    inicializarEmpresas(); 
+    inicializarPostos();
+    carregarOperacoesDoArquivo();
+    
     do {
     	system("cls");
         opcao = menuPrincipal();
     switch (opcao) {
         case 1:
     system("cls");
-    inicializarComponentes(); 
+    
     do {
         opc0 = menuComponentes();
         switch (opc0) {
@@ -53,12 +62,11 @@ int main() {
                 printf("Opcao invalida.\n");
         }
     } while (opc0 != 0);
-    finalizarComponentes();
     break;
      
             case 2:
             	system("cls");
-            	inicializarFuncionarios();
+            	
              	do{
              		opc1 = menuFuncionarios();
              		switch(opc1){
@@ -93,11 +101,11 @@ int main() {
 				 }
 
 				 }while(opc1!=0);
-             	finalizar();
+             	
                 break;
             case 3:
                 system("cls");
-    			inicializarEmpresas(); 
+    			
     			do {
         			opc =  menuEmpresas(); 
         			switch (opc) {
@@ -118,7 +126,6 @@ int main() {
                 			break;
             			case 5:
                 			system("cls");
-                			carregarOperacoesDoArquivo();
                 			removerEmpresa();
                 		break;
             			case 0:
@@ -131,7 +138,7 @@ int main() {
                 break;
             case 4:
                 system("cls");
-            	inicializarPostos();
+            	
              	do{
              		opc2 = menuPostos();
              		switch(opc2){
@@ -161,10 +168,11 @@ int main() {
              			printf("Opcao invalida");
 				 }
 				 }while(opc2!=0);
+				 
                 break;
             case 5:
             	system("cls");
-            	carregarOperacoesDoArquivo();
+            	
                 do{
              		opc2 = menuOperacoes();
              		switch(opc2){
@@ -192,9 +200,6 @@ int main() {
              			// Submenu para consultas específicas
              			case 6: 
              			system("cls");
-             			
-             			inicializarComponentes(); 
-             			inicializarEmpresas(); 
              			do {
                          opc1 = menuConsultas();
         
@@ -227,26 +232,34 @@ int main() {
         }
         
     } while(opc1 != 0);
-    
+                    
 
              		break;	
              		case 0:
              			printf("Saindo do menu de operacoes...");
+             			
              			break;
              		default:
              			printf("Opcao invalida");
 				 }
 				 }while(opc2!=0);
-
                 break;
             case 0:
                 printf("Saindo...\n");
+                
                 break;
             default:
                 printf("Opcao invalida.\n");
         }
     } while (opcao != 0);
     
+    //Liberação dos ficheiros da memória antes de encerrar o programa
+    
+    finalizarComponentes();
+    finalizarFuncionarios();
+	finalizarEmpresas();
+	finalizarPostos();
+    finalizarOperacoes();
     
     return 0;
 }

@@ -12,5 +12,6 @@ void listarEmpresas();
 void pesquisarEmpresa();
 void alterarEmpresa();
 void removerEmpresa();
+void finalizarEmpresas();
 
 #endif

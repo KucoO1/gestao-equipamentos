@@ -1,1 +1,2 @@
 0;Portas;12;12/3/2025;11;0;0;novo;novo;1;bom
+1;HD;125;29/04/2025;9;1;1;Externo;Novo;0;Rapido e em boas condicoes

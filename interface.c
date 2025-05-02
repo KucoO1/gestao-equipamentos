@@ -14,7 +14,7 @@ int menuPrincipal() {
     printf("4. Gerir Postos de Trabalho\n");
     printf("5. Gerir Operacoes\n");
     printf("0. Sair\n");
-    printf("Opcao: ");
+    printf("\n================================\nOpcao:");
     scanf("%d", &opcao);
     return opcao;
 }
@@ -29,8 +29,7 @@ int menuComponentes() {
     printf("5. Alterar o posto de trabalho para um componente\n");
     printf("6. Remover Componente\n");
     printf("0. Sair\n");
-    printf("\n==============================\n");
-    printf("Escolha uma opcao: ");
+    printf("\n================================\nOpcao:");
     scanf("%d", &opc0);
     return opc0;
 }
@@ -45,7 +44,7 @@ int menuFuncionarios() {
     printf("5. Remover Funcionario\n");
     printf("6. Alterar limite de funcionarios\n");
     printf("0. Sair\n");
-    printf("\n================================\n");
+    printf("\n================================\nOpcao:");
   	scanf("%d",&opc1);
   	return opc1;
 }
@@ -59,7 +58,7 @@ int menuEmpresas() {
     printf("4. Alterar Empresa\n");
     printf("5. Remover Empresa\n");
     printf("0. Sair\n");
-    printf("\n================================\n");
+    printf("\n================================\nOpcao:");
     scanf("%d", &opc);
     return opc;
 }
@@ -73,7 +72,7 @@ int menuPostos() {
     printf("4. Alterar Postos de trabalho\n");
     printf("5. Remover Postos de trabalho\n");
     printf("0. Sair\n");
-    printf("\n================================\n");
+    printf("\n================================\nOpcao:");
   	scanf("%d",&opc2);
   	return opc2;
 }
@@ -81,7 +80,7 @@ int menuPostos() {
 int menuOperacoes() {
     int opc3;
 
-    printf("\n=== MENU OPERACOES ===\n");
+    printf("\n==== MENU OPERACOES ====\n");
     printf("1. Inserir Operacao\n");
     printf("2. Listar Operacoes\n");
     printf("3. Pesquisar Operacoes\n");
@@ -89,7 +88,7 @@ int menuOperacoes() {
     printf("5. Remover Operacao\n");
     printf("6. Consultas\n");
     printf("0. Sair\n");
-    printf("Opcao: ");
+   printf("\n================================\nOpcao:");
     scanf("%d", &opc3);
     
     
@@ -108,7 +107,7 @@ int menuConsultas() {
         printf("4. Componentes presentes no Posto de Trabalho\n");
         printf("5. Pesquisar Empresas ou Componentes (por nome, ID ou numero de serie)\n");
         printf("0. Voltar ao menu de operacoes\n");
-        printf("Opcao: ");
+        printf("\n================================\nOpcao:");
         scanf("%d", &opc4);
         
 	
