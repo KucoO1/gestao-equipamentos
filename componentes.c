@@ -5,6 +5,7 @@
 #include <string.h>
 #include "data.h"
 #include "postos.h"
+#include "operacoes.h"
 
 int numeroDeComponentes;
 int totalComponentes = 0;
@@ -105,6 +106,16 @@ void alterarLimiteComponentes() {
     printf("Limite de componentes alterado com sucesso!\n");
 }
 
+int postoDeTrabalhoExiste(int idPosto) {
+    for (int i = 0; i < totalPostos; i++) {
+        if (postos[i].id == idPosto) {
+            return 1; // Posto encontrado
+        }
+    }
+    return 0; // Posto não encontrado
+}
+
+
 void adicionarComponente() {
     if (totalComponentes >= numeroDeComponentes) {
         printf("Limite de componentes atingido.\n");
@@ -142,8 +153,18 @@ void adicionarComponente() {
     printf("Condicao (Novo/Usado): ");
     gets(c.condicao);
 
-    printf("ID do Posto de Trabalho: ");
-    scanf("%d", &c.idPosto);
+    		do {
+    		printf("ID do Posto de Trabalho: ");
+    		scanf("%d", &c.idPosto);
+    
+   			 if (!postoDeTrabalhoExiste(c.idPosto)) {
+      				  printf("Posto de trabalho nao encontrado! Tente novamente.\n");
+   				 }
+			} while (!postoDeTrabalhoExiste(c.idPosto));
+    
+    
+    
+    
     fflush(stdin);
 
     printf("Observacoes: ");
@@ -242,10 +263,18 @@ void alterarComponente() {
 
             printf("Nova Condicao: ");
             gets(componentes[i].condicao);
-
-            printf("Novo ID Posto de Trabalho: ");
+            
+            	 do {
+    		printf("Novo ID Posto de Trabalho: ");
             scanf("%d", &componentes[i].idPosto);
             fflush(stdin);
+    
+   			 if (!postoDeTrabalhoExiste(componentes[i].idPosto)) {
+      				  printf("Posto de trabalho nao encontrado! Tente novamente.\n");
+   				 }
+			} while (!postoDeTrabalhoExiste(componentes[i].idPosto));
+
+            
 
             printf("Novas Observacoes: ");
             gets(componentes[i].observacoes);
@@ -258,14 +287,7 @@ void alterarComponente() {
     printf("Componente nao encontrado.\n");
 }
 
-int postoDeTrabalhoExiste(int idPosto) {
-    for (int i = 0; i < totalPostos; i++) {
-        if (postos[i].id == idPosto) {
-            return 1; // Posto encontrado
-        }
-    }
-    return 0; // Posto não encontrado
-}
+
 void trocarPostoComponente() {
     int id, novoIdPosto;
 
@@ -296,12 +318,25 @@ void trocarPostoComponente() {
     printf("Componente com ID %d nao encontrado.\n", id);
 }
 
+int ComponenteEmUso(int idComponente) {
+    for (int i = 0; i < totalOperacoes; i++) {
+        if (operacoes[i].idComponente == idComponente) {
+            return 1; 
+        }
+    }
+    return 0; 
+}
 
 
 void removerComponente() {
     int id;
     printf("ID do componente a remover: ");
     scanf("%d", &id);
+
+    if (ComponenteEmUso(id)) {
+        printf("Este componente esta associado a uma ou mais operacoees e nao pode ser removido.\n");
+        return;
+    }
 
     for (int i = 0; i < totalComponentes; i++) {
         if (componentes[i].id == id) {
