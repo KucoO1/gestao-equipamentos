@@ -3,7 +3,12 @@
 #include "interface.h"
 #include "funcionarios.h"
 #include "postos.h"
+#include <stdlib.h>
 
+void limparTela(){
+    system("cls");
+}
+    
 
 int menuPrincipal() {
     int opcao;
