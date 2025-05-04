@@ -21,38 +21,39 @@ int main() {
     inicializarPostos();
     carregarOperacoesDoArquivo();
     
+    
     do {
-    	system("cls");
+    	limparTela();
         opcao = menuPrincipal();
     switch (opcao) {
         case 1:
-    system("cls");
+    limparTela();
     
     do {
         opc0 = menuComponentes();
         switch (opc0) {
             case 1:
-                system("cls");
+                limparTela();
                 adicionarComponente();
                 break;
             case 2:
-                system("cls");
+                limparTela();
                 listarComponentes();
                 break;
             case 3:
-                system("cls");
+                limparTela();
                 pesquisarComponente();
                 break;
             case 4:
-                system("cls");
+                limparTela();
                 alterarComponente();
                 break;
             case 5:
-                system("cls");
+                limparTela();
                 trocarPostoComponente();
                 break;
             case 6:
-                system("cls");
+                limparTela();
                 removerComponente();
                 break;
             case 0:
@@ -65,32 +66,32 @@ int main() {
     break;
      
             case 2:
-            	system("cls");
+            	limparTela();
             	
              	do{
              		opc1 = menuFuncionarios();
              		switch(opc1){
              		case 1:
-             			system("cls");
+             			limparTela();
              			adicionarFuncionario();
              			break;
              		case 2:
              			listarFuncionarios();
              			break;
              		case 3:
-             			system("cls");
+             			limparTela();
              			pesquisarFuncionario();
              			break;
              		case 4:
-             			system("cls");
+             			limparTela();
              			alterarFuncionario();
              			break;
              		case 5:
-             			system("cls");
+             			limparTela();
              			removerFuncionario();
              			break;
              		case 6:
-             			system("cls");
+             			limparTela();
              			alterarLimiteFuncionarios();
              			break;
              		case 0:
@@ -104,28 +105,28 @@ int main() {
              	
                 break;
             case 3:
-                system("cls");
+                limparTela();
     			
     			do {
         			opc =  menuEmpresas(); 
         			switch (opc) {
             			case 1:
-                			system("cls");
+                			limparTela();
                 			adicionarEmpresa();
                 		break;
             			case 2:
                 			listarEmpresas();
                			 	break;
             			case 3:
-                			system("cls");
+                			limparTela();
                 			pesquisarEmpresa();
                 			break;
             			case 4:
-                			system("cls");
+                			limparTela();
                 			alterarEmpresa();
                 			break;
             			case 5:
-                			system("cls");
+                			limparTela();
                 			removerEmpresa();
                 		break;
             			case 0:
@@ -137,28 +138,28 @@ int main() {
     			} while (opc != 0);
                 break;
             case 4:
-                system("cls");
+                limparTela();
             	
              	do{
              		opc2 = menuPostos();
              		switch(opc2){
              		case 1:
-             			system("cls");
+             			limparTela();
              			adicionarPosto();
              			break;
              		case 2:
              			listarPostos();
              			break;
              		case 3:
-             			system("cls");
+             			limparTela();
              			pesquisarPosto();
              			break;
              		case 4:
-             			system("cls");
+             			limparTela();
              			alterarPosto();
              			break;
              		case 5:
-             			system("cls");
+             			limparTela();
              			removerPosto();
              			break;
              		case 0:
@@ -171,57 +172,57 @@ int main() {
 				 
                 break;
             case 5:
-            	system("cls");
+            	limparTela();
             	
                 do{
              		opc2 = menuOperacoes();
              		switch(opc2){
              		case 1:
-             			system("cls");
+             			limparTela();
              			inserirOperacao();
              			break;
              		case 2:
-             			system("cls");
+             			limparTela();
              			listarOperacoes();
              			break;
              		case 3:
-             			system("cls");
+             			limparTela();
              			pesquisarOperacao();
              			break;
              		case 4:
-             			system("cls");
+             			limparTela();
              			alterarOperacao();
              			break;
              		case 5:
-             			system("cls");
+             			limparTela();
              			apagarOperacao();
              			break;
              			
              			// Submenu para consultas específicas
              			case 6: 
-             			system("cls");
+             			limparTela();
              			do {
                          opc1 = menuConsultas();
         
           				switch(opc1) {
             	case 1:
-            		system("cls");
+            		limparTela();
                	 	listarComponentesAtrasados();
                 	break;
             	case 2:
-            		system("cls");
+            		limparTela();
                 	listarComponentesPorPosto();
                 	break;
                 case 3:
-                	system("cls");
+                	limparTela();
 					listarComponentesFora();
 				 	break;
 				case 4:
-					system("cls");
+					limparTela();
 					listarComponentesNoPosto();
 					break;
 				case 5:
-					system("cls");
+					limparTela();
 					PesquisarEmpresaComponente();
 					break;
             	case 0:
