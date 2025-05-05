@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <string.h> 
 #include "data.h"
+#include "util.h"
 
 int numeroDeFuncionarios;
 int totalFuncionarios=0;
@@ -102,6 +103,7 @@ void adicionarFuncionario(){
 	printf("Funcao: ");
 	gets(f.funcao);
 
+    fflush(stdin);
 	printf("Descricao: ");
 	gets(f.descricao);
 
@@ -129,7 +131,10 @@ void listarFuncionarios(){
 }
 
 }
-void pesquisarFuncionario() {
+
+
+
+void pesquisarFuncionarioNome(){
 	char nome[50];
 	
 	fflush(stdin);
@@ -148,6 +153,48 @@ void pesquisarFuncionario() {
 	    }
 	}  
 }
+
+void pesquisarFuncionariosComWildcards() {
+    char termo[100];
+    printf("Digite o termo de busca com wildcards (* e ?): ");
+    fflush(stdin);
+    scanf(" %[^\n]", termo);
+
+    int encontrados = 0;
+    for (int i = 0; i < totalFuncionarios; i++) {
+        if (comparaComWildcards(funcionarios[i].nome, termo) ||
+            comparaComWildcards(funcionarios[i].funcao, termo) ||
+            comparaComWildcards(funcionarios[i].descricao, termo)) {
+
+            printf("\nID: %d\n", funcionarios[i].id);
+            printf("Nome: %s\n", funcionarios[i].nome);
+            printf("Funcao: %s\n", funcionarios[i].funcao);
+            printf("Descricao: %s\n", funcionarios[i].descricao);
+            encontrados++;
+        }
+    }
+
+    if (encontrados == 0) {
+        printf("Nenhum funcionario encontrado com o termo fornecido.\n");
+    }
+}
+
+void pesquisarFuncionario() {
+    int opcao;
+    printf("Pesquisar Funcionario por:\n1. Nome\n2. Wildcards\nOpcao: ");
+    fflush(stdin);
+    scanf("%d", &opcao);
+
+    if (opcao == 1) {
+        pesquisarFuncionarioNome();
+    } else if (opcao == 2) {
+        pesquisarFuncionariosComWildcards();
+    } else {
+        printf("Opcao invalida.\n");
+    }
+}
+
+
 void alterarFuncionario(){
 	int id;
 	printf("ID do funcionario a alterar: ");
@@ -162,7 +209,8 @@ void alterarFuncionario(){
 
             printf("Nova funcao: ");
             gets(funcionarios[i].funcao);
-
+            
+            fflush(stdin);
             printf("Nova descricao: ");
             gets(funcionarios[i].descricao);
 
@@ -174,6 +222,7 @@ void alterarFuncionario(){
 void removerFuncionario(){
 	int id;
     printf("ID do funcionario a remover: ");
+    fflush(stdin);
     scanf("%d", &id);
 
     for (int i = 1; i <= totalFuncionarios; i++) {

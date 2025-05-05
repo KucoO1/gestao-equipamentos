@@ -5,6 +5,7 @@
 
 #define MAX 100
 
+
 //Funcionarios
 typedef struct {
     int id;
@@ -62,5 +63,30 @@ typedef struct {
     float montante;
     char observacoes[100];
 } Operacao;
+
+
+typedef struct {
+    int id;
+    int idComponentePai;         // Identifica a que componente pertence
+    char designacao[50];         
+    char numeroSerie[30];        
+    char condicao[15];           // Novo, Usado, etc.
+    char observacoes[100];       
+} Subcomponente;
+
+typedef struct {
+    int id;
+    int idComponente;
+    int idEmpresa;
+    float preco;
+    int tempoEntregaDias;
+    char dataProposta[11]; 
+    char observacoes[100];
+} PropostaEmpresa;
+
+
+
+
+
 
 #endif

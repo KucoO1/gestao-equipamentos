@@ -6,6 +6,7 @@
 #include "postos.h"
 #include "empresas.h"
 #include "componentes.h"
+#include "util.h"
 
 
 
@@ -231,6 +232,7 @@ void listarComponentesNoPosto() {
 void pesquisarEmpresas() {
     char termo[50];
     printf("Digite nome ou ID da empresa a pesquisar: ");
+    fflush(stdin);
     scanf(" %[^\n]", termo);
 
     int idBusca = atoi(termo); // "ASCII to Integer" - converte uma string (texto) que representa um número em um inteiro (int).
@@ -257,11 +259,12 @@ Se não encontrar, retorna NULL.*/
         printf("Nenhuma empresa encontrada.\n");
 }
 
-//Pesqusar empresas
+//Pesqusar Componentes
 
 void pesquisarComponentes() {
     char termo[50];
     printf("Digite nome, ID ou numero de serie do componente a pesquisar: ");
+    fflush(stdin);
     scanf(" %[^\n]", termo);
 
     int idBusca = atoi(termo);
@@ -290,6 +293,7 @@ void PesquisarEmpresaComponente(){
 	
     int escolha;
     printf("Pesquisar por:\n1. Empresa\n2. Componente\nOpcao: ");
+    fflush(stdin);
     scanf("%d", &escolha);
     
     if(escolha == 1)
@@ -319,12 +323,15 @@ void PesquisarEmpresaComponente(){
 void inserirOperacao() {
     Operacao nova;
 
+    fflush(stdin);
     printf("Numero interno: ");
     scanf("%d", &nova.numeroInterno);
-    printf("Numero externo: ");
+	printf("Numero externo: ");
     scanf(" %[^\n]", nova.numeroExterno);
     
     do {
+    
+	fflush(stdin);
     printf("ID do posto: ");
     scanf("%d", &nova.idPosto);
     
@@ -335,6 +342,7 @@ void inserirOperacao() {
     
    
    do {
+   	fflush(stdin);
     printf("ID do componente: ");
     scanf("%d", &nova.idComponente);
     
@@ -344,6 +352,7 @@ void inserirOperacao() {
 } while (!componenteExiste(nova.idComponente));
 
 do {
+	fflush(stdin);
     printf("ID da empresa: ");
     scanf("%d", &nova.idEmpresa);
     
@@ -352,7 +361,7 @@ do {
     }
 } while (!empresaExiste(nova.idEmpresa));
    
-    
+    fflush(stdin);
     
     printf("Tipo de operacao: ");
     scanf(" %[^\n]", nova.tipoOperacao);
@@ -360,12 +369,19 @@ do {
     
     printf("Data de saida (dd/mm/aaaa): ");
     scanf(" %[^\n]", nova.dataSaida);
-    printf("Data de chegada (dd/mm/aaaa): ");
-    scanf(" %[^\n]", nova.dataChegada);
+    
+    printf("Data de chegada (deixe em branco se estiver fora): ");
+	getchar(); // limpar o '\n' pendente do scanf anterior
+	fgets(nova.dataChegada, sizeof(nova.dataChegada), stdin);
+	nova.dataChegada[strcspn(nova.dataChegada, "\n")] = '\0'; // remover '\n' final
+    
+    fflush(stdin);
     printf("Data prevista (dd/mm/aaaa): ");
     scanf(" %[^\n]", nova.dataPrevista);
     
     do {
+    
+	fflush(stdin);
     printf("ID do funcionario: ");
     scanf("%d", &nova.idFuncionario);
     if (!funcionarioExiste(nova.idFuncionario)) {
@@ -373,12 +389,14 @@ do {
     }
 } while (!funcionarioExiste(nova.idFuncionario));
     
+    fflush(stdin);
     
     printf("Data da operacao (dd/mm/aaaa): ");
     scanf(" %[^\n]", nova.dataOperacao);
     printf("Montante: ");
     scanf("%f", &nova.montante);
     printf("Observacoes: ");
+    fflush(stdin);
     scanf(" %[^\n]", nova.observacoes);
 
     operacoes = realloc(operacoes, (totalOperacoes + 1) * sizeof(Operacao));
@@ -401,9 +419,51 @@ void listarOperacoes() {
 
 //Pesquisar Operação
 
-void pesquisarOperacao() {
+void pesquisarOperacoesComWildcards() {
+    char termo[100];
+    printf("Digite o termo de busca com wildcards (* e ?): ");
+    getchar(); // Limpa o buffer
+    fgets(termo, sizeof(termo), stdin);
+    termo[strcspn(termo, "\n")] = '\0'; // Remove newline
+
+    int encontrados = 0;
+    for (int i = 0; i < totalOperacoes; i++) {
+        if (comparaComWildcards(operacoes[i].numeroExterno, termo) ||
+            comparaComWildcards(operacoes[i].tipoOperacao, termo) ||
+            comparaComWildcards(operacoes[i].dataSaida, termo) ||
+            comparaComWildcards(operacoes[i].dataChegada, termo) ||
+            comparaComWildcards(operacoes[i].dataPrevista, termo) ||
+            comparaComWildcards(operacoes[i].dataOperacao, termo) ||
+            comparaComWildcards(operacoes[i].observacoes, termo)) {
+
+            printf("\nNumero Interno: %d\n", operacoes[i].numeroInterno);
+            printf("Numero Externo: %s\n", operacoes[i].numeroExterno);
+            printf("ID do Posto: %d\n", operacoes[i].idPosto);
+            printf("ID do Componente: %d\n", operacoes[i].idComponente);
+            printf("ID da Empresa: %d\n", operacoes[i].idEmpresa);
+            printf("Tipo de Operacao: %s\n", operacoes[i].tipoOperacao);
+            printf("Data Saida: %s\n", operacoes[i].dataSaida);
+            printf("Data Chegada: %s\n", operacoes[i].dataChegada);
+            printf("Data Prevista: %s\n", operacoes[i].dataPrevista);
+            printf("ID do Funcionario: %d\n", operacoes[i].idFuncionario);
+            printf("Data Operacao: %s\n", operacoes[i].dataOperacao);
+            printf("Montante: %.2f\n", operacoes[i].montante);
+            printf("Observacoes: %s\n", operacoes[i].observacoes);
+            encontrados++;
+        }
+    }
+
+    if (encontrados == 0) {
+        printf("Nenhuma operacao encontrada com o termo fornecido.\n");
+    }
+}
+
+
+
+void pesquisarOperacaoPorNumero(){
     int escolha;
-    printf("Pesquisar por:\n1. Numero Interno\n2. Numero Externo\nOpcao: ");
+    printf("Numero:\n1. Interno\n2. Externo\nOpcao: ");
+    fflush(stdin);
     scanf("%d", &escolha);
 
     if (escolha == 1) {
@@ -466,6 +526,20 @@ void pesquisarOperacao() {
     printf("Operacao nao encontrada.\n");
 }
 
+void pesquisarOperacao() {
+    int opcao;
+    printf("Pesquisar Operacao por:\n1. Numero (Interno/Externo)\n2. Wildcards\nOpcao: ");
+    fflush(stdin);
+    scanf("%d", &opcao);
+
+    if (opcao == 1) {
+        pesquisarOperacaoPorNumero();
+    } else if (opcao == 2) {
+        pesquisarOperacoesComWildcards();
+    } else {
+        printf("Opcao invalida.\n");
+    }
+}
 
 
 
@@ -474,16 +548,19 @@ void pesquisarOperacao() {
 void alterarOperacao() {
     int numero;
     printf("Digite o numero interno da operacao a alterar: ");
+    fflush(stdin);
     scanf("%d", &numero);
 
     for (int i = 0; i < totalOperacoes; i++) {
     	
         if (operacoes[i].numeroInterno == numero) {
             printf("Novo numero externo: ");
+            fflush(stdin);
             scanf(" %[^\n]", operacoes[i].numeroExterno);
             
     do {
      printf("Novo ID do posto: ");
+     fflush(stdin);
      scanf("%d", &operacoes[i].idPosto);
     
     if (!postoExiste(operacoes[i].idPosto)) {
@@ -494,6 +571,7 @@ void alterarOperacao() {
    
    do {
     printf("Novo ID do componente: ");
+    fflush(stdin);
     scanf("%d", &operacoes[i].idComponente);
     
     if (!componenteExiste(operacoes[i].idComponente)) {
@@ -503,6 +581,7 @@ void alterarOperacao() {
 
    do {
     printf("Novo ID da empresa: ");
+    fflush(stdin);
     scanf("%d", &operacoes[i].idEmpresa);
     
     if (!empresaExiste(operacoes[i].idEmpresa)) {
@@ -510,31 +589,40 @@ void alterarOperacao() {
     }
    } while (!empresaExiste(operacoes[i].idEmpresa));
             
+            fflush(stdin);      
                    
             printf("Novo tipo de operacao: ");
             scanf(" %[^\n]", operacoes[i].tipoOperacao);
+            
             printf("Nova data de saida: ");
             scanf(" %[^\n]", operacoes[i].dataSaida);
-            printf("Nova data de chegada: ");
-            scanf(" %[^\n]", operacoes[i].dataChegada);
-            printf("Nova data prevista: ");
+            
+            printf("Nova data de chegada (deixe em branco se ainda estiver fora): ");
+    		getchar(); // limpar o '\n' pendente do scanf anterior
+			fgets(operacoes[i].dataChegada, sizeof(operacoes[i].dataChegada), stdin);
+			operacoes[i].dataChegada[strcspn(operacoes[i].dataChegada, "\n")] = '\0'; // remover '\n' final
+            
+			printf("Nova data prevista: ");
             scanf(" %[^\n]", operacoes[i].dataPrevista);
             
 	do {
             printf("Novo ID do funcionario: ");
+            fflush(stdin);
             scanf("%d", &operacoes[i].idFuncionario);
     if (!funcionarioExiste(operacoes[i].idFuncionario)) {
         printf("Funcionario nao encontrado! Tente novamente.\n");
     }
 } while (!funcionarioExiste(operacoes[i].idFuncionario));
 			
+			fflush(stdin);
 			
             printf("Nova data da operacao: ");
             scanf(" %[^\n]", operacoes[i].dataOperacao);
             printf("Novo montante: ");
             scanf("%f", &operacoes[i].montante);
             printf("Novas observacoes: ");
-            scanf(" %[^\n]", operacoes[i].observacoes);
+            fflush(stdin);
+			scanf(" %[^\n]", operacoes[i].observacoes);
 
             printf("Operacao alterada com sucesso.\n");
             salvarOperacoesEmArquivo();
@@ -550,6 +638,7 @@ void alterarOperacao() {
 void apagarOperacao() {
     int numero;
     printf("Digite o numero interno da operacao a apagar: ");
+    fflush(stdin);
     scanf("%d", &numero);
 
     for (int i = 0; i < totalOperacoes; i++) {
