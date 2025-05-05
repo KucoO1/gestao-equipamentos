@@ -7,6 +7,7 @@
 #include "empresas.h"
 #include "operacoes.h"
 #include "componentes.h"
+#include "util.h"
 #include <stdlib.h>
 
 
@@ -16,10 +17,13 @@ int main() {
     // Inicialização global dos ficheiros na memória para garantir a consistência dos dados e evitar vazamentos dde memória 
     
     inicializarComponentes(); 
+    carregarSubcomponentesDoArquivo();
     inicializarFuncionarios();
     inicializarEmpresas(); 
+    carregarPropostasDoArquivo();
     inicializarPostos();
     carregarOperacoesDoArquivo();
+
     
     
     do {
@@ -56,6 +60,43 @@ int main() {
                 limparTela();
                 removerComponente();
                 break;
+                
+            case 7:
+                 	limparTela();
+                 	do {
+                 		opc1 = menuSubComponentes();
+             			    
+                               		 
+                 	 	switch (opc1) {
+                 		 	case 1:
+                 		 		 limparTela();
+                 		 		 adicionarSubcomponente();
+        						 break;
+    						case 2:
+    	 						limparTela();
+                                alterarSubcomponente();
+        						break;
+   							case 3:
+    						 	limparTela();
+    	 						listarSubcomponentesDeComponente();
+        						break;
+        					case 4:
+        						limparTela();
+       							removerSubcomponente() ;
+        						break;
+                 		 	case 0:
+                 		 		 limparTela();
+             					 printf("Saindo do menu de gestao de subcomponentes...\n");
+             					 break;
+             				default:
+             			printf("Opcao invalida");
+						  
+                 		}
+					 		
+					 } while (opc1!=0);
+					 
+               			
+             				break;  
             case 0:
                 printf("Saindo do menu de componentes...\n");
                 break;
@@ -98,7 +139,7 @@ int main() {
              			printf("Saindo do menu de funcionarios");
              			break;
              		default:
-             			printf("Opcao Invalida");
+             			printf("Opcao invalida");
 				 }
 
 				 }while(opc1!=0);
@@ -108,8 +149,8 @@ int main() {
                 limparTela();
     			
     			do {
-        			opc =  menuEmpresas(); 
-        			switch (opc) {
+        			opc1 =  menuEmpresas(); 
+        			switch (opc1) {
             			case 1:
                 			limparTela();
                 			adicionarEmpresa();
@@ -129,13 +170,49 @@ int main() {
                 			limparTela();
                 			removerEmpresa();
                 		break;
+                		
+                		case 6:
+                				limparTela();
+                 			do {
+       							 opc2 = menuOfertas();
+       								 switch (opc2) {
+           								case 1:
+           									limparTela();
+                							adicionarProposta();
+               							    break;
+           								case 2:
+           									limparTela();
+                							listarPropostas();
+               								break;
+            							case 3:
+            								limparTela();
+                							compararPropostasPorComponente();
+               								break;
+            							case 4:
+            								limparTela();
+                							alterarProposta();
+                							break;
+            							case 5:
+            								limparTela();
+                							removerProposta();
+                							break;
+                 		 				case 0:
+             								printf("Saindo do menu ofertas...\n");
+             								break;
+             							default:
+             							printf("Opcao invalida");
+						  				}
+					 } while (opc2!=0);
+                	break;	
+                	
+                			
             			case 0:
                 			printf("Saindo do menu de empresas...\n");
                 			break;
             			default:
                 			printf("Opcao invalida.\n");
         			}
-    			} while (opc != 0);
+    			} while (opc1 != 0);
                 break;
             case 4:
                 limparTela();
@@ -235,7 +312,8 @@ int main() {
     } while(opc1 != 0);
                     
 
-             		break;	
+             		break;
+					 	
              		case 0:
              			printf("Saindo do menu de operacoes...");
              			
@@ -244,7 +322,14 @@ int main() {
              			printf("Opcao invalida");
 				 }
 				 }while(opc2!=0);
-                break;
+                
+				break;
+                
+            case 6:
+            	limparTela();
+             	estatisticasGerais();
+                break;  
+            
             case 0:
                 printf("Saindo...\n");
                 
@@ -257,8 +342,10 @@ int main() {
     //Liberação dos ficheiros da memória antes de encerrar o programa
     
     finalizarComponentes();
+    finalizarSubcomponentes();
     finalizarFuncionarios();
 	finalizarEmpresas();
+	finalizarOfertas();
 	finalizarPostos();
     finalizarOperacoes();
     

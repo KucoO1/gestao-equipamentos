@@ -18,6 +18,7 @@ int menuPrincipal() {
     printf("3. Gerir Empresas\n");
     printf("4. Gerir Postos de Trabalho\n");
     printf("5. Gerir Operacoes\n");
+    printf("6. Gerir Estatisticas\n");
     printf("0. Sair\n");
     printf("\n================================\nOpcao:");
     scanf("%d", &opcao);
@@ -33,6 +34,7 @@ int menuComponentes() {
     printf("4. Alterar Componente\n");
     printf("5. Alterar o posto de trabalho para um componente\n");
     printf("6. Remover Componente\n");
+     printf("7. Gerir Subcomponentes \n");
     printf("0. Sair\n");
     printf("\n================================\nOpcao:");
     scanf("%d", &opc0);
@@ -62,6 +64,7 @@ int menuEmpresas() {
     printf("3. Pesquisar Empresa\n");
     printf("4. Alterar Empresa\n");
     printf("5. Remover Empresa\n");
+    printf("6. Menu Ofertas\n");
     printf("0. Sair\n");
     printf("\n================================\nOpcao:");
     scanf("%d", &opc);
@@ -101,11 +104,58 @@ int menuOperacoes() {
     return opc3;
 }
 
+// Extras 
+
+
+
+int menuSubComponentes() {
+    int opc0;
+    printf("\n==== Gerir Subcomponentes ====\n");
+    printf("1. Adicionar subcomponente\n");
+    printf("2. Alterar subcomponente\n");
+    printf("3. Listar subcomponentes\n");
+    printf("4. Remover subcomponente\n");
+    printf("0. Sair\n");
+    printf("\n================================\nOpcao:");
+    scanf("%d", &opc0);
+    return opc0;
+}
+
+
+int mostrarEstatisticasGerais() {
+    int opcao;
+        printf("\n===== ESTATISTICAS GERAIS =====\n");
+        printf("1. Estatisticas de Ofertas\n");
+        printf("2. Estatisticas de Componentes\n");
+        printf("3. Estatisticas de Empresas\n");
+        printf("4. Estatisticas de Subcomponentes\n");
+        printf("0. Voltar\n");
+        printf("Escolha uma opcao: ");
+        scanf("%d", &opcao);
+         return opcao;
+}
+
+int menuOfertas() {
+    int opc5;
+   
+    printf("\n====== GESTAO DE OFERTAS ===========\n");
+    printf("1. Adicionar nova oferta de preco/tempo\n");
+    printf("2. Listar todas as ofertas existentes\n");
+    printf("3. Comparar ofertas por componente\n");
+    printf("4. Alterar dados de uma oferta\n");
+    printf("5. Remover uma oferta existente\n");
+    printf("0. Voltar ao menu das empresas\n");
+    printf("=====================================\n");
+    printf("Opcao: ");
+    scanf("%d", &opc5);
+    return opc5;
+}
+
 // Submenu para Consultas específicas
 int menuConsultas() {
 	int opc4;
     
-        printf("\n=== Menu de Consultas ===\n");
+        printf("\n====== Menu de Consultas ======\n");
         printf("1. Componentes que ultrapassaram a data prevista de chegada\n");
         printf("2. Componentes por Posto de Trabalho\n");
         printf("3. Componentes fora do Posto de Trabalho (em operacoes)\n");

@@ -4,6 +4,7 @@
 #include "data.h"
 #include "operacoes.h"
 #include "funcionarios.h"
+#include "util.h"
 
 int numeroDePostos;
 int totalPostos = 0;
@@ -106,6 +107,16 @@ int funcExiste(int idFuncionario) {
 }
 
 
+char* obterNomeFuncionarioPorId(int idFuncionario) {
+    for (int i = 0; i < totalFuncionarios; i++) {
+        if (funcionarios[i].id == idFuncionario) {
+            return funcionarios[i].nome;
+        }
+    }
+    return NULL; // Retorna NULL se o ID não for encontrado
+}
+
+
 void adicionarPosto() {
     if (totalPostos >= numeroDePostos) {
         printf("Limite de postos de trabalho atingido.\n");
@@ -114,26 +125,37 @@ void adicionarPosto() {
 
     PostoTrabalho p;
     p.id = totalPostos;
-
-    fflush(stdin);
+    
+    
+    do
+	{
+	   fflush(stdin);
     printf("ID do Funcionario Responsavel: ");
     scanf("%d", &p.idFuncionario);
 
     if (!funcExiste(p.idFuncionario)) {
         printf("Funcionario com o ID %d nao encontrado.\n", p.idFuncionario);
-        return;
     }
+		
+	}while(!funcExiste(p.idFuncionario));
+    
+    char *nomeFuncionario = obterNomeFuncionarioPorId(p.idFuncionario);
+    strcpy(p.nome, nomeFuncionario); // copia o nome para o campo do posto
 
+    
     fflush(stdin);
+    /*
     printf("Nome: ");
     gets(p.nome);
-
+    */
+    
     printf("Local: ");
     gets(p.local);
-
+    
     printf("Secao: ");
     gets(p.secao);
-
+    
+    fflush(stdin);
     printf("Descricao: ");
     gets(p.descricao);
 
@@ -164,7 +186,7 @@ void listarPostos() {
     }
 }
 
-void pesquisarPosto() {
+void pesquisarPostoNome() {
     char nome[50];
 
     fflush(stdin);
@@ -187,6 +209,51 @@ void pesquisarPosto() {
     printf("Posto de trabalho nao encontrado.\n");
 }
 
+void pesquisarPostosComWildcards() {
+    char termo[100];
+    printf("Digite o termo de busca com wildcards (* e ?): ");
+    fflush(stdin);
+    scanf(" %[^\n]", termo);
+
+    int encontrados = 0;
+    for (int i = 0; i < totalPostos; i++) {
+        if (comparaComWildcards(postos[i].nome, termo) ||
+            comparaComWildcards(postos[i].local, termo) ||
+            comparaComWildcards(postos[i].secao, termo) ||
+            comparaComWildcards(postos[i].descricao, termo)) {
+
+            printf("\nID: %d\n", postos[i].id);
+            printf("Nome: %s\n", postos[i].nome);
+            printf("Local: %s\n", postos[i].local);
+            printf("Secao: %s\n", postos[i].secao);
+            printf("Descricao: %s\n", postos[i].descricao);
+            printf("ID do Funcionario Responsavel: %d\n", postos[i].idFuncionario);
+            encontrados++;
+        }
+    }
+
+    if (encontrados == 0) {
+        printf("Nenhum posto de trabalho encontrado com o termo fornecido.\n");
+    }
+}
+
+void pesquisarPosto() {
+    int opcao;
+    printf("Pesquisar Posto de Trabalho por:\n1. Nome\n2. Wildcards\nOpcao: ");
+    fflush(stdin);
+    scanf("%d", &opcao);
+
+    if (opcao == 1) {
+        pesquisarPostoNome(); 
+    } else if (opcao == 2) {
+        pesquisarPostosComWildcards();
+    } else {
+        printf("Opcao invalida.\n");
+    }
+}
+
+
+
 void alterarPosto() {
     int id;
     printf("ID do posto a alterar: ");
@@ -194,21 +261,40 @@ void alterarPosto() {
 
     for (int i = 0; i < totalPostos; i++) {
         if (postos[i].id == id) {
+        	
+             
+            do
+			{
+				fflush(stdin);
+				printf("Novo ID do Funcionario Responsavel: ");
+                scanf("%d", &postos[i].idFuncionario);
 
+   				if (!funcExiste(postos[i].idFuncionario)) {
+        			printf("Funcionario com o ID %d nao encontrado.\n", postos[i].idFuncionario);
+   				 }
+			}while(!funcExiste(postos[i].idFuncionario));
+            
+            
+            
+            char *nomeFuncionario = obterNomeFuncionarioPorId(postos[i].idFuncionario);
+            strcpy(postos[i].nome, nomeFuncionario);
+            
+            /*printf("Novo nome: ");
+            gets(postos[i].nome);*/
+            
             fflush(stdin);
-            printf("Novo nome: ");
-            gets(postos[i].nome);
-
             printf("Novo local: ");
             gets(postos[i].local);
 
             printf("Nova secao: ");
             gets(postos[i].secao);
-
+            
+            fflush(stdin);
             printf("Nova descricao: ");
             gets(postos[i].descricao);
 
             printf("Posto alterado com sucesso.\n");
+            salvarPostosEmArquivo();
             return;
         }
     }

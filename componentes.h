@@ -7,6 +7,9 @@
 extern Componente *componentes;
 extern int totalComponentes;
 
+extern Subcomponente *subcomponentes;
+extern int totalSubcomponentes;
+
 void salvarConfiguracaoComponentes();
 void carregarConfiguracaoComponentes();
 void salvarComponentesEmArquivo();
@@ -22,5 +25,14 @@ void pesquisarComponente();
 void alterarComponente();
 void trocarPostoComponente();
 void removerComponente();
+
+void salvarSubcomponentesEmArquivo();
+void carregarSubcomponentesDoArquivo();
+void finalizarSubcomponentes();
+
+void adicionarSubcomponente();
+void alterarSubcomponente();
+void listarSubcomponentesDeComponente();
+void removerSubcomponente();
 
 #endif

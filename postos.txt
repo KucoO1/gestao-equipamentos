@@ -1,2 +1,3 @@
-0;23;Nataniel;plataforma;petroleo;sass
-1;0;Tarefas brutas;aaa;aaa;aaa
+0;0;Nataniel;Plataforma;Petroleo;SASS
+1;1;Emerson;aaa;aaa;aaa
+2;1;Emerson;Escritorio;Software;Desktop
